@@ -62,7 +62,7 @@ class _SignUpState extends State<SignUp> {
                     Spacer(),
                     TextFormField(
                       validator: (val) {
-                        return val.isEmpty ? "Enter Name" : null;
+                        return val.isEmpty ? "Enter Name " : null;
                       },
                       decoration: InputDecoration(
                         hintText: "Name",
