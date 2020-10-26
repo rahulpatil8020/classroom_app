@@ -1,11 +1,61 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
+  
   Future<void> addQuizData(Map quizData, String quizId) async {
     await FirebaseFirestore.instance
         .collection("Quiz")
         .doc(quizId)
         .set(quizData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  // Future<void> addUsersData(Map studentData, String studentId) async {
+  //   await FirebaseFirestore.instance
+  //       .collection("Student Info")
+  //       .doc(studentId)
+  //       .set(studentData)
+  //       .catchError((e) {a
+  //     print(e.toString());
+  //   });
+  // }
+
+  Future<void> addFieldsData(
+      {String branch,
+      String semester,
+      String studentId,
+      String div,
+      String divId,
+      Map studentData}) async {
+    await FirebaseFirestore.instance
+        .collection(branch)
+        .doc(semester)
+        .collection(div)
+        .doc(divId)
+        .collection("Student Info")
+        .doc(studentId)
+        .set(studentData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+  Future<void> addUsersData(
+      {String branch,
+      String semester,
+      String studentId,
+      String div,
+      String divId,
+      Map studentData}) async {
+    await FirebaseFirestore.instance
+        .collection(branch)
+        .doc(semester)
+        .collection(div)
+        .doc(divId)
+        .collection("Student Info")
+        .doc(studentId)
+        .set(studentData)
         .catchError((e) {
       print(e.toString());
     });
