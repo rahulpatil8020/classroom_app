@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseService {
-  
   Future<void> addQuizData(Map quizData, String quizId) async {
     await FirebaseFirestore.instance
         .collection("Quiz")
@@ -40,20 +39,12 @@ class DatabaseService {
       print(e.toString());
     });
   }
-  Future<void> updateUserData(
-      {String branch,
-      String semester,
-      String studentId,
-      String div,
-      Map studentData}) async {
+
+  Future<void> setUserData({String studentId, Map studentData}) async {
     await FirebaseFirestore.instance
-        .collection("Branch")
-        .doc(branch)
-        .collection(semester)
-        .doc(div)
         .collection("Student Info")
         .doc(studentId)
-        .update(studentData)
+        .set(studentData)
         .catchError((e) {
       print(e.toString());
     });

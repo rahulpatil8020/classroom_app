@@ -74,6 +74,7 @@ class _SignUpState extends State<SignUp> {
         "Semister": semister,
         "UserID": userId,
       };
+      databaseService.setUserData(studentData: userMap,studentId: userId);
       databaseService
           .addFieldsData(
               branch: branch,
