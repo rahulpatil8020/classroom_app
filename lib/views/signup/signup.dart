@@ -75,12 +75,11 @@ class _SignUpState extends State<SignUp> {
         "UserID": userId,
       };
       databaseService
-          .addUsersData(
+          .addFieldsData(
               branch: branch,
               div: div,
               semester: semister,
               studentId: userId,
-              divId: divID,
               studentData: userMap)
           .then((value) {
         Navigator.pushReplacement(
