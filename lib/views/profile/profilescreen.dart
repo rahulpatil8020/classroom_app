@@ -1,5 +1,27 @@
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/services/database.dart';
 import 'package:flutter/material.dart';
+
+
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  DatabaseService databaseService = new DatabaseService();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      child: StreamBuilder(
+        
+      ),
+      
+    );
+  }
+}
+
 
 class ProfileScreen extends StatelessWidget {
   @override
