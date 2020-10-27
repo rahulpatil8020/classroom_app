@@ -40,21 +40,20 @@ class DatabaseService {
       print(e.toString());
     });
   }
-  Future<void> addUsersData(
+  Future<void> updateUserData(
       {String branch,
       String semester,
       String studentId,
       String div,
-      String divId,
       Map studentData}) async {
     await FirebaseFirestore.instance
-        .collection(branch)
-        .doc(semester)
-        .collection(div)
-        .doc(divId)
+        .collection("Branch")
+        .doc(branch)
+        .collection(semester)
+        .doc(div)
         .collection("Student Info")
         .doc(studentId)
-        .set(studentData)
+        .update(studentData)
         .catchError((e) {
       print(e.toString());
     });
