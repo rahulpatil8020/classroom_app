@@ -4,6 +4,7 @@ import 'package:classroom/views/main_screen.dart';
 import 'package:classroom/views/signup/signup.dart';
 import 'package:classroom/views/teacher_main_screen/teacher_main_screen.dart';
 import 'package:classroom/widgets/appBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,7 @@ class _SignInState extends State<SignIn> {
       setState(() {
         _isLoading = true;
       });
+      try{
       await authService.signInEmailAndPass(email, password).then((value) {
         if (value != null) {
           setState(() {
@@ -40,6 +42,16 @@ class _SignInState extends State<SignIn> {
               context, MaterialPageRoute(builder: (context) => MainScreen()));
         }
       });
+      
+    } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      print('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      print('Wrong password provided for that user.');
+    }
+  } catch (e) {
+    print(e.toString());
+  }
     }
   }
 
