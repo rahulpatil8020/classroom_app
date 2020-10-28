@@ -1,6 +1,6 @@
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/services/database.dart';
-import 'package:classroom/views/profile/profilescreen.dart';
+import 'package:classroom/views/home_page/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -52,8 +52,8 @@ class NotificationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => Profile()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Home()));
         },
         child: Container(
             alignment: Alignment.center,

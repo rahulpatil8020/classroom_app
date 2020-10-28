@@ -74,17 +74,17 @@ class _SignUpState extends State<SignUp> {
         "Semister": semister,
         "UserID": userId,
       };
-      databaseService.setUserData(studentData: userMap,studentId: userId);
+      databaseService.setUserData(studentData: userMap, studentEmail: email);
       databaseService
           .addFieldsData(
               branch: branch,
               div: div,
               semester: semister,
-              studentId: userId,
+              studentEmail: email,
               studentData: userMap)
           .then((value) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => MainScreen(email)));
       });
     }
   }

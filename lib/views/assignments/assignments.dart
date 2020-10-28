@@ -1,6 +1,6 @@
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/services/database.dart';
-import 'package:classroom/views/profile/profilescreen.dart';
+import 'package:classroom/views/home_page/home.dart';
 import 'package:classroom/widgets/appBar.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -67,7 +67,7 @@ class AssignmentTile extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Profile(),
+                builder: (context) => Home(),
               ));
         },
         child: Container(

@@ -1,9 +1,10 @@
-import 'package:classroom/helper/constant.dart';
 import 'package:classroom/services/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
+  final String email;
+  Profile(this.email);
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -17,6 +18,7 @@ class _ProfileState extends State<Profile> {
         child: StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("Student Info")
+                .doc(widget.email)
                 .snapshots(),
             // .instance
             //     .collection("Branch")

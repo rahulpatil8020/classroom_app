@@ -31,27 +31,26 @@ class _SignInState extends State<SignIn> {
       setState(() {
         _isLoading = true;
       });
-      try{
-      await authService.signInEmailAndPass(email, password).then((value) {
-        if (value != null) {
-          setState(() {
-            _isLoading = false;
-          });
-          HelperFunction.saveUserLoggedInDetails(isloggedin: true);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => MainScreen()));
+      try {
+        await authService.signInEmailAndPass(email, password).then((value) {
+          if (value != null) {
+            setState(() {
+              _isLoading = false;
+            });
+            HelperFunction.saveUserLoggedInDetails(isloggedin: true);
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => MainScreen(email)));
+          }
+        });
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
         }
-      });
-      
-    } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      print('No user found for that email.');
-    } else if (e.code == 'wrong-password') {
-      print('Wrong password provided for that user.');
-    }
-  } catch (e) {
-    print(e.toString());
-  }
+      } catch (e) {
+        print(e.toString());
+      }
     }
   }
 

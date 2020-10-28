@@ -24,7 +24,7 @@ class DatabaseService {
   Future<void> addFieldsData(
       {String branch,
       String semester,
-      String studentId,
+      String studentEmail,
       String div,
       Map studentData}) async {
     await FirebaseFirestore.instance
@@ -33,17 +33,17 @@ class DatabaseService {
         .collection(semester)
         .doc(div)
         .collection("Student Info")
-        .doc(studentId)
+        .doc(studentEmail)
         .set(studentData)
         .catchError((e) {
       print(e.toString());
     });
   }
 
-  Future<void> setUserData({String studentId, Map studentData}) async {
+  Future<void> setUserData({String studentEmail, Map studentData}) async {
     await FirebaseFirestore.instance
         .collection("Student Info")
-        .doc(studentId)
+        .doc(studentEmail)
         .set(studentData)
         .catchError((e) {
       print(e.toString());

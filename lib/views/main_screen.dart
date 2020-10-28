@@ -7,18 +7,25 @@ import 'package:classroom/widgets/appBar.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
+  final String email;
+  MainScreen(this.email);
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _MainScreenState createState() => _MainScreenState(email);
 }
 
 class _MainScreenState extends State<MainScreen> {
+  static String email;
+
   int _currentIndex = 0;
   List<Widget> _children = [
     Home(),
     Notifications(),
     StudyMaterial(),
-    Profile()
+    Profile(email)
   ];
+
+  _MainScreenState(String email);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
