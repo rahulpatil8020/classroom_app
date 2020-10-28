@@ -91,3 +91,10 @@ class DatabaseService {
     });
   }
 }
+
+getStudentData(String email) async {
+  return await FirebaseFirestore.instance
+      .collection("Student Info")
+      .doc(email)
+      .get();
+}
