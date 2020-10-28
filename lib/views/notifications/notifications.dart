@@ -53,7 +53,7 @@ class NotificationTile extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProfileScreen()));
+              MaterialPageRoute(builder: (context) => Profile()));
         },
         child: Container(
             alignment: Alignment.center,
