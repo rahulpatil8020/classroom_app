@@ -3,11 +3,13 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/services/database.dart';
 import 'package:classroom/widgets/appBar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 
 class CreateAssignments extends StatefulWidget {
   @override
@@ -15,9 +17,26 @@ class CreateAssignments extends StatefulWidget {
 }
 
 class _CreateAssignmentsState extends State<CreateAssignments> {
-  String teacheremail, branch, semister, div, about, title;
+  String teacheremail, branch, semister, div, about, title, subject, assignId;
   DateTime pickeddate;
   final mainReference = FirebaseDatabase.instance.reference().child('Database');
+  DatabaseService databaseService = new DatabaseService();
+
+  Future storeAssignmentDetail(String url) async {
+    assignId = randomAlphaNumeric(16);
+    Map<String, String> assignmentMap = {
+      "assignmentTitle": title,
+      "assignmentDescr": about,
+      "assignmentSubject": "DBMS",
+      "assignmentURL": url,
+      "assignmentId": assignId,
+      "dueDate": pickeddate.toString(),
+      "forBranch": "Computer",
+      "forSem": semister,
+      "forDiv": div
+    };
+    databaseService.addAssignmentData(assignmentMap, assignId);
+  }
 
   Future getPDFandUpload() async {
     var rng = new Random();
@@ -40,6 +59,7 @@ class _CreateAssignmentsState extends State<CreateAssignments> {
     StorageUploadTask uploadTask = reference.putData(asset);
     String url = await (await uploadTask.onComplete).ref.getDownloadURL();
     documentFileUpload(url);
+    storeAssignmentDetail(url);
   }
 
   void documentFileUpload(String str) {
