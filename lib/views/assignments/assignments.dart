@@ -1,10 +1,9 @@
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/services/database.dart';
-import 'package:classroom/views/home_page/home.dart';
 import 'package:classroom/widgets/appBar.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Assignments extends StatefulWidget {
   @override
@@ -32,7 +31,8 @@ class _AssignmentsState extends State<Assignments> {
                         course['assignmentTitle'],
                         course['assignmentId'],
                         course['assignmentSubject'],
-                        course['assignmentDescr']);
+                        course['assignmentDescr'],
+                        course['assignmentURL']);
                   });
         },
       ),
@@ -57,18 +57,17 @@ class _AssignmentsState extends State<Assignments> {
 }
 
 class AssignmentTile extends StatelessWidget {
-  final String title, id, subject, descr;
-  AssignmentTile(this.title, this.id, this.subject, this.descr);
+  final String title, id, subject, descr, url;
+  AssignmentTile(this.title, this.id, this.subject, this.descr, this.url);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Home(),
-              ));
+            context,
+            MaterialPageRoute(builder: (context) => _launchURL(url)),
+          );
         },
         child: Container(
             alignment: Alignment.center,
@@ -157,5 +156,14 @@ class AssignmentTile extends StatelessWidget {
                 )
               ],
             )));
+  }
+
+  _launchURL(String uRL) async {
+    final url = uRL;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
