@@ -90,6 +90,25 @@ class DatabaseService {
       print(e.toString());
     });
   }
+
+  Future<void> addAssignmentDataInBranch(
+      Map assignmentData,
+      String assignmentId,
+      String branch,
+      String semister,
+      String division) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semister)
+        .doc(division)
+        .collection("Assignments")
+        .doc(assignmentId)
+        .set(assignmentData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
 }
 
 getStudentData(String email) async {
