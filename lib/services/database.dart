@@ -109,6 +109,17 @@ class DatabaseService {
       print(e.toString());
     });
   }
+
+  Future<void> addAssignQuestion(Map questionData, String assignmentId) async {
+    await FirebaseFirestore.instance
+        .collection("Assignments")
+        .doc(assignmentId)
+        .collection("Questions Data")
+        .add(questionData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
 }
 
 getStudentData(String email) async {

@@ -1,12 +1,8 @@
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/services/database.dart';
-import 'package:classroom/views/assignments/assignments.dart';
 import 'package:classroom/views/assignments/create_questions.dart';
-
 import 'package:classroom/widgets/appBar.dart';
-
 import 'package:firebase_database/firebase_database.dart';
-
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 
@@ -210,7 +206,7 @@ class _CreateAssignmentsState extends State<CreateAssignments> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CreateAssignmentQuestions()));
+                                    CreateAssignmentQuestions(assignId)));
                       },
                     )
                   ],
