@@ -4,8 +4,9 @@ import 'package:classroom/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class CreateAssignmentQuestions extends StatefulWidget {
-  final String assignid;
-  CreateAssignmentQuestions(this.assignid);
+  final String assignid, branch, semister, division;
+  CreateAssignmentQuestions(
+      this.assignid, this.branch, this.semister, this.division);
   @override
   _CreateAssignmentQuestionsState createState() =>
       _CreateAssignmentQuestionsState();
@@ -26,7 +27,8 @@ class _CreateAssignmentQuestionsState extends State<CreateAssignmentQuestions> {
       Map<String, String> assignMap = {
         "Question": question,
       };
-
+      databaseService.addAssignmentDataInBranch(assignMap, widget.assignid,
+          widget.branch, widget.semister, widget.division);
       databaseService
           .addAssignQuestion(assignMap, widget.assignid)
           .then((value) {
@@ -90,11 +92,17 @@ class _CreateAssignmentQuestionsState extends State<CreateAssignmentQuestions> {
                           children: [
                             GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  uploadQuestion();
                                 },
                                 child: customButton(
                                     context, "Add Question", 180.0)),
-                            customButton(context, "Submit Assignment", 180.0)
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: customButton(
+                                  context, "Submit Assignment", 180.0),
+                            )
                           ],
                         ),
                       )

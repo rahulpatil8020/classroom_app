@@ -4,6 +4,8 @@ import 'package:classroom/widgets/homeScreenBox.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
+  final String email;
+  Home(this.email);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -16,8 +18,8 @@ class _HomeState extends State<Home> {
       body: Column(
         children: [
           homeScreenBox(context, "Quiz", Quiz(), size.width, 200, 35),
-          homeScreenBox(
-              context, "Assignments", Assignments(), size.width, 200, 35)
+          homeScreenBox(context, "Assignments", Assignments(widget.email),
+              size.width, 200, 35)
         ],
       ),
     );

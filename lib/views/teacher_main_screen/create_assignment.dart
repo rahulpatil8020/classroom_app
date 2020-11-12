@@ -205,8 +205,8 @@ class _CreateAssignmentsState extends State<CreateAssignments> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    CreateAssignmentQuestions(assignId)));
+                                builder: (context) => CreateAssignmentQuestions(
+                                    assignId, branch, semister, div)));
                       },
                     )
                   ],

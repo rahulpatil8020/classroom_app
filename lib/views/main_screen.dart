@@ -17,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   Widget getWidget(index, email) {
     List<Widget> _children = [
-      Home(),
+      Home(email),
       Notifications(),
       StudyMaterial(),
       Profile(email)
