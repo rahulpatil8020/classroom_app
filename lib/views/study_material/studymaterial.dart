@@ -1,5 +1,4 @@
 import 'package:classroom/helper/constant.dart';
-import 'package:classroom/views/assignments/assignments.dart';
 import 'package:flutter/material.dart';
 
 class StudyMaterial extends StatelessWidget {
@@ -45,8 +44,7 @@ class StudyMaterial extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => Assignments()));
+            debugPrint('tap');
           },
         );
       },
