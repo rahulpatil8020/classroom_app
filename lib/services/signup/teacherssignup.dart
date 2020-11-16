@@ -1,5 +1,6 @@
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/sign_in/signin.dart';
+import 'package:classroom/services/signup/Subject/dynamicForm.dart';
 import 'package:classroom/services/signup/Subject/subjectadd.dart';
 import 'package:classroom/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -150,7 +151,7 @@ class _TeacherSignUpState extends State<TeacherSignUp> {
                 onTap: () {
                   if(_formKey.currentState.validate()){
                     print("Clicked on Sign UP Gradient Button");
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => AddSubject(td: widget.td,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => MultiForm()));
                   }
                   // signUp();
 

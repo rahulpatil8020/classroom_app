@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
           ? MainScreen(HelperFunction.uSERLOGGEDINKEY)
           // : SignIn(),
       // : TeacherSignUp(widget.td),
-      : DynamicForm(),
+      : MultiForm(td: widget.td,),
     );
   }
 }
