@@ -1,5 +1,7 @@
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/sign_in/signin.dart';
+import 'package:classroom/services/signup/teacherssignup.dart';
 import 'package:classroom/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,10 +9,12 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MyApp(TeacherDetails()));
 }
 
 class MyApp extends StatefulWidget {
+  final TeacherDetails td;
+  MyApp(this.td);
   // This widget is the root of your application.
   @override
   _MyAppState createState() => _MyAppState();
@@ -46,7 +50,8 @@ class _MyAppState extends State<MyApp> {
       ),
       home: (_isLoggedin ?? false)
           ? MainScreen(HelperFunction.uSERLOGGEDINKEY)
-          : SignIn(),
+          // : SignIn(),
+      : TeacherSignUp(widget.td),
     );
   }
 }
