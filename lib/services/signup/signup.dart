@@ -1,8 +1,8 @@
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/services/auth.dart';
 import 'package:classroom/services/database.dart';
+import 'package:classroom/services/sign_in/signin.dart';
 import 'package:classroom/views/main_screen.dart';
-import 'package:classroom/views/sign_in/signin.dart';
 import 'package:classroom/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
