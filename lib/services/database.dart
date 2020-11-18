@@ -120,6 +120,31 @@ class DatabaseService {
       print(e.toString());
     });
   }
+
+  Future<void> addNoticeDataInBranch(Map noticeData, String noticeId,
+      String branch, String semister, String division) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semister)
+        .doc(division)
+        .collection("Notifications")
+        .doc(noticeId)
+        .set(noticeData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> addNoticeData(Map noticeData, String noticeId) async {
+    await FirebaseFirestore.instance
+        .collection("Notifications")
+        .doc(noticeId)
+        .set(noticeData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
 }
 
 getStudentData(String email) async {

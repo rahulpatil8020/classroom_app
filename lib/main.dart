@@ -4,6 +4,7 @@ import 'package:classroom/services/sign_in/signin.dart';
 import 'package:classroom/services/signup/Subject/dynamicForm.dart';
 import 'package:classroom/services/signup/teacherssignup.dart';
 import 'package:classroom/views/main_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -51,9 +52,9 @@ class _MyAppState extends State<MyApp> {
       ),
       home: (_isLoggedin ?? false)
           ? MainScreen(HelperFunction.uSERLOGGEDINKEY)
-          // : SignIn(),
-      // : TeacherSignUp(widget.td),
-      : MultiForm(td: widget.td,),
+          : SignIn(),
+      //  : TeacherSignUp(widget.td),
+      //: MultiForm(td: widget.td,),
     );
   }
 }
