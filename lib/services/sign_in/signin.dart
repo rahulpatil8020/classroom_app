@@ -1,4 +1,6 @@
+import 'package:classroom/TEST/create_teacher_info.dart';
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/auth.dart';
 import 'package:classroom/services/signup/signup.dart';
 import 'package:classroom/views/main_screen.dart';
@@ -9,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
+  final TeacherDetails td;
+  SignIn(this.td);
   @override
   _SignInState createState() => _SignInState();
 }
@@ -157,7 +161,7 @@ class _SignInState extends State<SignIn> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SignUp()));
+                                        builder: (context) => SignUp(widget.td)));
                                 print("Clicked on don't have an Account");
                               },
                               child: Text(
@@ -170,7 +174,7 @@ class _SignInState extends State<SignIn> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SignUp()));
+                                        builder: (context) => SignUp(widget.td)));
                                 print("Clicked on Sign Up");
                               },
                               child: Text(
@@ -190,7 +194,7 @@ class _SignInState extends State<SignIn> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => TeacherMainScreen(),
+                                  builder: (context) => TestTeacherDetails(widget.td),
                                 ));
                             print("Clicked on Sign IN Linear Gradient");
                           },

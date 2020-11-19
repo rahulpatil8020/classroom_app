@@ -80,6 +80,27 @@ class DatabaseService {
         .get();
   }
 
+  Future<void> addTeacherData(Map questionData, String email) async {
+    await FirebaseFirestore.instance
+        .collection("Teacher_Info")
+        .doc(email)
+        .set(questionData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> addSubjectData(Map subjectData, String email) async {
+    await FirebaseFirestore.instance
+        .collection("Teacher_Info")
+        .doc(email)
+        .collection("Subject_Data")
+        .add(subjectData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
   Future<void> addAssignmentData(
       Map assignmentData, String assignmentId) async {
     await FirebaseFirestore.instance

@@ -1,4 +1,5 @@
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/auth.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/services/sign_in/signin.dart';
@@ -10,6 +11,8 @@ import 'package:random_string/random_string.dart';
 import '../../widgets/appBar.dart';
 
 class SignUp extends StatefulWidget {
+  final TeacherDetails td;
+  SignUp(this.td);
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -330,7 +333,8 @@ class _SignUpState extends State<SignUp> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => SignIn()));
+                                          builder: (context) =>
+                                              SignIn(widget.td)));
                                   print(
                                       "Clicked on Sign IN Already have account");
                                 },
@@ -343,7 +347,8 @@ class _SignUpState extends State<SignUp> {
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => SignIn()));
+                                          builder: (context) =>
+                                              SignIn(widget.td)));
                                   print("Clicked on Sign IN");
                                 },
                                 child: Text(

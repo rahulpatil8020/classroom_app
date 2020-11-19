@@ -247,57 +247,55 @@ class _UserFormState extends State<UserForm> {
                       hint: Text("Branch"),
                       value: widget.td.branch,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 75),
-                      child: Row(
-                        children: [
-                          DropdownButton<String>(
-                            items: [
-                              DropdownMenuItem(
-                                  value: "Sem 1", child: Text("Sem 1")),
-                              DropdownMenuItem(
-                                  value: "Sem 2", child: Text("Sem 2")),
-                              DropdownMenuItem(
-                                  value: "Sem 3", child: Text("Sem 3")),
-                              DropdownMenuItem(
-                                  value: "Sem 4", child: Text("Sem 4")),
-                              DropdownMenuItem(
-                                  value: "Sem 5", child: Text("Sem 5")),
-                              DropdownMenuItem(
-                                  value: "Sem 6", child: Text("Sem 6")),
-                              DropdownMenuItem(
-                                  value: "Sem 7", child: Text("Sem 7")),
-                              DropdownMenuItem(
-                                  value: "Sem 8", child: Text("Sem 8")),
-                            ],
-                            onChanged: (val) {
-                              setState(() {
-                                widget.td.sem = val;
-                                print(widget.td.sem);
-                              });
-                            },
-                            hint: Text("Semester"),
-                            value: widget.td.sem,
-                          ),
-                          SizedBox(
-                            width: 40,
-                          ),
-                          DropdownButton<String>(
-                            items: [
-                              DropdownMenuItem(value: "A", child: Text("A")),
-                              DropdownMenuItem(value: "B", child: Text("B")),
-                            ],
-                            onChanged: (val) {
-                              setState(() {
-                                widget.td.div = val;
-                                print(widget.td.div);
-                              });
-                            },
-                            hint: Text("Division"),
-                            value: widget.td.div,
-                          ),
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DropdownButton<String>(
+                          items: [
+                            DropdownMenuItem(
+                                value: "Sem 1", child: Text("Sem 1")),
+                            DropdownMenuItem(
+                                value: "Sem 2", child: Text("Sem 2")),
+                            DropdownMenuItem(
+                                value: "Sem 3", child: Text("Sem 3")),
+                            DropdownMenuItem(
+                                value: "Sem 4", child: Text("Sem 4")),
+                            DropdownMenuItem(
+                                value: "Sem 5", child: Text("Sem 5")),
+                            DropdownMenuItem(
+                                value: "Sem 6", child: Text("Sem 6")),
+                            DropdownMenuItem(
+                                value: "Sem 7", child: Text("Sem 7")),
+                            DropdownMenuItem(
+                                value: "Sem 8", child: Text("Sem 8")),
+                          ],
+                          onChanged: (val) {
+                            setState(() {
+                              widget.td.sem = val;
+                              print(widget.td.sem);
+                            });
+                          },
+                          hint: Text("Semester"),
+                          value: widget.td.sem,
+                        ),
+                        SizedBox(
+                          width: 40,
+                        ),
+                        DropdownButton<String>(
+                          items: [
+                            DropdownMenuItem(value: "A", child: Text("A")),
+                            DropdownMenuItem(value: "B", child: Text("B")),
+                          ],
+                          onChanged: (val) {
+                            setState(() {
+                              widget.td.div = val;
+                              print(widget.td.div);
+                            });
+                          },
+                          hint: Text("Division"),
+                          value: widget.td.div,
+                        ),
+                      ],
                     ),
             ],
           ),
