@@ -1,6 +1,20 @@
 class TeacherDetails{
   String _fname, _mname,_lname, _gender, _registrationId, _uid, _email, _password, _sem, _div, _subject, _branch;
-  TeacherDetails([this._age,this._lname,this._fname,this._gender,this._mname,this._registrationId,this._subject,this._uid,this._email, this._password, this._branch,this._div,this._sem]);
+  DateTime _pickeddate;
+  TeacherDetails([this._age,this._lname,this._fname,this._gender,this._mname,this._registrationId,this._subject,this._uid,this._email, this._password,this._pickeddate, this._branch,this._div,this._sem]);
+
+  // get pickeddate => _pickeddate;
+  //
+  // set pickeddate(value) {
+  //   _pickeddate = value;
+  // }
+
+  DateTime get pickeddate => _pickeddate;
+
+  set pickeddate(DateTime value) {
+    _pickeddate = value;
+  }
+
 
   get sem => _sem;
 

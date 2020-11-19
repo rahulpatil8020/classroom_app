@@ -1,3 +1,6 @@
+import 'package:classroom/TEST/create_teacher_info.dart';
+import 'package:classroom/TEST/display_subject_test.dart';
+import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/views/teacher_main_screen/create_assignment.dart';
 import 'package:classroom/views/teacher_main_screen/create_notification.dart';
 import 'package:classroom/views/teacher_main_screen/create_quiz.dart';
@@ -7,7 +10,15 @@ import 'package:classroom/widgets/homeScreenBox.dart';
 
 import 'package:flutter/material.dart';
 
-class TeacherMainScreen extends StatelessWidget {
+class TeacherMainScreen extends StatefulWidget {
+  final TeacherDetails td;
+  TeacherMainScreen(this.td);
+
+  @override
+  _TeacherMainScreenState createState() => _TeacherMainScreenState();
+}
+
+class _TeacherMainScreenState extends State<TeacherMainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +40,18 @@ class TeacherMainScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   homeScreenBox(
+
                       context, "Notice", CreateNotification(), 150, 150, 25),
+
                   homeScreenBox(
                       context, "Attendence", Attendance(), 150, 150, 25)
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  homeScreenBox(
+                      context, "Test", TestTeacherDetails(widget.td), 150, 150, 25),
                 ],
               ),
             ],

@@ -52,9 +52,9 @@ class _MyAppState extends State<MyApp> {
       ),
       home: (_isLoggedin ?? false)
           ? MainScreen(HelperFunction.uSERLOGGEDINKEY)
-          : SignIn(),
-      //  : TeacherSignUp(widget.td),
-      //: MultiForm(td: widget.td,),
+          : SignIn(widget.td),
+      // : TeacherSignUp(widget.td),
+      // : MultiForm(td: widget.td,),
     );
   }
 }
