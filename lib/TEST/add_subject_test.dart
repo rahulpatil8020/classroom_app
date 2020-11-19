@@ -193,7 +193,7 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
                     ),
 
                     StreamBuilder(
-        stream: FirebaseFirestore.instance
+                      stream: FirebaseFirestore.instance
             .collection("Teacher_Info")
             .doc(widget.td.email)
             .collection("Subject_Data")
