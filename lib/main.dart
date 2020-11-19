@@ -1,3 +1,4 @@
+import 'package:classroom/TEST/add_subject_test.dart';
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/sign_in/signin.dart';
@@ -52,7 +53,8 @@ class _MyAppState extends State<MyApp> {
       ),
       home: (_isLoggedin ?? false)
           ? MainScreen(HelperFunction.uSERLOGGEDINKEY)
-          : SignIn(widget.td),
+          // : SignIn(widget.td),
+          : AddSubjectTest(widget.td),
       // : TeacherSignUp(widget.td),
       // : MultiForm(td: widget.td,),
     );

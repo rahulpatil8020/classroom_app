@@ -42,8 +42,12 @@ class _SignInState extends State<SignIn> {
               _isLoading = false;
             });
             HelperFunction.saveUserLoggedInDetails(isloggedin: true);
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => MainScreen(email)));
+            print(widget.td.email);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TeacherMainScreen(widget.td)));
+            // MainScreen
           }
         });
       } on FirebaseAuthException catch (e) {
@@ -95,6 +99,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           onChanged: (val) {
                             email = val;
+                            widget.td.email = email;
                           },
                         ),
                         SizedBox(
@@ -161,7 +166,8 @@ class _SignInState extends State<SignIn> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SignUp(widget.td)));
+                                        builder: (context) =>
+                                            SignUp(widget.td)));
                                 print("Clicked on don't have an Account");
                               },
                               child: Text(
@@ -174,7 +180,8 @@ class _SignInState extends State<SignIn> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => SignUp(widget.td)));
+                                        builder: (context) =>
+                                            SignUp(widget.td)));
                                 print("Clicked on Sign Up");
                               },
                               child: Text(
@@ -194,7 +201,8 @@ class _SignInState extends State<SignIn> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => TestTeacherDetails(widget.td),
+                                  builder: (context) =>
+                                      TestTeacherDetails(widget.td),
                                 ));
                             print("Clicked on Sign IN Linear Gradient");
                           },
