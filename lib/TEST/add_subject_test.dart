@@ -191,6 +191,38 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
                     SizedBox(
                       height: 100,
                     ),
+
+                    StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection("Teacher_Info")
+            .doc(widget.td.email)
+            .collection("Subject_Data")
+            .snapshots(),
+        builder: (context, snapshot) {
+          return ListView.builder(
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (context, index) {
+              DocumentSnapshot course = snapshot.data.documents[index];
+              return GestureDetector(
+                onTap: () {
+                 print("Tapped")
+                },
+                child: ListTile(
+                  leading: CircleAvatar(
+                    // child: Text(widget.td.div.substring(0, 1)),
+                    child: Text(course["Division"]),
+                    backgroundColor: Colors.black,
+                  ),
+                  // title: Text(widget.td.subject),
+                  title: Text(course["Subject"]),
+                  subtitle: Text(
+                      "Semister: ${course["Semester"]}   Branch: ${course["Branch"]}"),
+                ),
+              );
+            },
+          );
+        },
+      ),
                   ],
                 ),
               ),
