@@ -1,3 +1,4 @@
+import 'package:classroom/TEST/add_subject_test.dart';
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/models/questionModel.dart';
 import 'package:classroom/models/subjectdetails.dart';
@@ -154,10 +155,15 @@ class _DisplaySubjectListState extends State<DisplaySubjectList> {
                   widget.td.div = course["Division"];
                   widget.td.subject = course["Subject"];
                   widget.td.sem = course["Semester"];
+                  widget.td.uid = course.id;
                   print(widget.td.subject);
                   print(widget.td.branch);
                   print(widget.td.sem);
                   print(widget.td.div);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditSubjectTest(widget.td)));
                 },
                 child: ListTile(
                   leading: CircleAvatar(
@@ -173,6 +179,16 @@ class _DisplaySubjectListState extends State<DisplaySubjectList> {
               );
             },
           );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        tooltip: "Add Subject",
+        onPressed: () {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddSubjectTest(widget.td)));
         },
       ),
     );

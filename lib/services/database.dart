@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseService {
   Future<void> addQuizData(Map quizData, String quizId) async {
@@ -96,6 +97,28 @@ class DatabaseService {
         .doc(email)
         .collection("Subject_Data")
         .add(subjectData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> updateSubjectData(Map subjectData, String email, String id) async {
+    await FirebaseFirestore.instance
+        .collection("Teacher_Info")
+        .doc(email)
+        .collection("Subject_Data").doc(id)
+        .update(subjectData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> deleteSubjectData(String email, String id) async {
+    await FirebaseFirestore.instance
+        .collection("Teacher_Info")
+        .doc(email)
+        .collection("Subject_Data").doc(id)
+        .delete()
         .catchError((e) {
       print(e.toString());
     });
