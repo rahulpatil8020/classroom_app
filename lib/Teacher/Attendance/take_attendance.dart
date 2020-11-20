@@ -1,4 +1,5 @@
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/views/quiz/playquiz.dart';
 import 'package:classroom/widgets/appBar.dart';
@@ -7,6 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Attendance extends StatefulWidget {
+  final TeacherDetails td;
+  Attendance(this.td);
   @override
   _AttendanceState createState() => _AttendanceState();
 }
@@ -19,7 +22,12 @@ class _AttendanceState extends State<Attendance> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       child: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("Quiz").snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("Branch")
+            .doc(widget.td.branch)
+            .collection(widget.td.sem)
+            .doc(widget.td.div)
+            .collection("Student Info").snapshots(),
         builder: (context, snapshot) {
           return snapshot.data == null
               ? Container()
@@ -28,7 +36,7 @@ class _AttendanceState extends State<Attendance> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot course = snapshot.data.documents[index];
                     return QuizTile(
-                        course['quizDescription'],
+                        course['FirstName'],
                         course['quizImageURL'],
                         course['quizTitle'],
                         course['quizId']);
