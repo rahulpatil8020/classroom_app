@@ -25,7 +25,9 @@ AppBar appBar(BuildContext context) {
     actions: <Widget>[
       IconButton(
           icon: Icon(Icons.exit_to_app, color: kSecondaryColor),
-          onPressed: () {})
+          onPressed: () {
+            // signOut();
+          })
     ],
     centerTitle: true,
   );

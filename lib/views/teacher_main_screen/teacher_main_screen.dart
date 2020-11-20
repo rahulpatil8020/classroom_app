@@ -75,6 +75,9 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print(widget.td.fname);
+          print(widget.td.email);
+          print(widget.td.lname);
+          print(widget.td.mname);
         },
       ),
       // homeScreenBox(context, "Create Assignment", CreateAssignments())
