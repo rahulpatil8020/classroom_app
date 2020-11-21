@@ -158,7 +158,7 @@ class DatabaseService {
         .collection(div)
         .doc("Teacher_Info")
         .collection("Subject_Data").doc(id)
-        .update(subjectData)
+        .delete()
         .catchError((e) {
       print(e.toString());
     });
