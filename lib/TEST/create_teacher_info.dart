@@ -194,11 +194,12 @@ class _TestTeacherDetailsState extends State<TestTeacherDetails> {
                       "role": "Teacher",
                     };
 
-                    databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
+
                     databaseService
                         .addTeacherData(teacherInfo, widget.td.email)
                         .then((value) {
-                      Navigator.push(
+                      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => AddSubjectTest(td: widget.td)));
