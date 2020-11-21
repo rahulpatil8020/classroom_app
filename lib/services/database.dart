@@ -1,3 +1,4 @@
+import 'package:classroom/views/study_material/studymaterial.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -83,6 +84,17 @@ class DatabaseService {
     await FirebaseFirestore.instance
         .collection("Teacher_Info")
         .doc(email)
+        .set(questionData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> addTeacherDataMain(Map questionData, String email, String branch, String semester, String div) async {
+    await FirebaseFirestore.instance.collection(branch)
+        .doc(semester)
+        .collection(div)
+        .doc("Teacher_Info")
         .set(questionData)
         .catchError((e) {
       print(e.toString());
