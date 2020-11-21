@@ -160,7 +160,7 @@ class _DisplaySubjectListState extends State<DisplaySubjectList> {
                   print(widget.td.branch);
                   print(widget.td.sem);
                   print(widget.td.div);
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => EditSubjectTest(widget.td)));
