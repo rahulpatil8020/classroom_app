@@ -127,12 +127,36 @@ class DatabaseService {
     });
   }
 
-
+  Future<void> updateSubjectDataMain(Map subjectData, String email, String id,String branch, String semester, String div) async {
+    await FirebaseFirestore.instance
+        .collection(branch)
+        .doc(semester)
+        .collection(div)
+        .doc("Teacher_Info")
+        .collection("Subject_Data").doc(id)
+        .update(subjectData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
 
   Future<void> updateSubjectData(Map subjectData, String email, String id) async {
     await FirebaseFirestore.instance
         .collection("Teacher_Info")
         .doc(email)
+        .collection("Subject_Data").doc(id)
+        .update(subjectData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> deleteSubjectDataMain(Map subjectData, String email, String id,String branch, String semester, String div) async {
+    await FirebaseFirestore.instance
+        .collection(branch)
+        .doc(semester)
+        .collection(div)
+        .doc("Teacher_Info")
         .collection("Subject_Data").doc(id)
         .update(subjectData)
         .catchError((e) {

@@ -174,12 +174,12 @@ class _SignUpState extends State<SignUp> {
                             width: 152,
                             child: TextFormField(
                               validator: (val) {
-                                return val.length <= 5 && val.isNotEmpty
+                                return val.length <= 2 && val.isNotEmpty
                                     ? null
                                     : "Roll number should be of 2 digits";
                               },
                               decoration: InputDecoration(
-                                hintText: "Roll No.(5 digit)",
+                                hintText: "Roll No.(2 digit)",
                               ),
                               keyboardType: TextInputType.number,
                               onChanged: (val) {
