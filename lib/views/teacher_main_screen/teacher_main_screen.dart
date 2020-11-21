@@ -1,11 +1,12 @@
 import 'package:classroom/TEST/create_teacher_info.dart';
 import 'package:classroom/TEST/display_subject_test.dart';
+import 'package:classroom/Teacher/Attendance/take_attendance.dart';
 import 'package:classroom/Teacher/subject_list.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/views/teacher_main_screen/create_assignment.dart';
 import 'package:classroom/views/teacher_main_screen/create_notification.dart';
 import 'package:classroom/views/teacher_main_screen/create_quiz.dart';
-import 'file:///D:/Programming/Flutter/classroom_app/lib/Teacher/Attendance/take_attendance.dart';
+
 import 'package:classroom/widgets/appBar.dart';
 import 'package:classroom/widgets/homeScreenBox.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -56,7 +57,13 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
                     homeScreenBox(
                         context, "Notice", CreateNotification(), 150, 150, 25),
                     homeScreenBox(
-                        context, "Attendence", SubjectList(widget.td,"Attendance",Attendance(widget.td)), 150, 150, 25)
+                        context,
+                        "Attendence",
+                        SubjectList(
+                            widget.td, "Attendance", Attendance(widget.td)),
+                        150,
+                        150,
+                        25)
                   ],
                 ),
                 Row(
