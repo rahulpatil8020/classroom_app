@@ -127,7 +127,13 @@ class DatabaseService {
     });
   }
 
-  Future<void> updateSubjectDataMain(Map subjectData, String email, String id,String branch, String semester, String div) async {
+  Future<void> updateSubjectDataMain(
+      {Map subjectData,
+      String email,
+      String id,
+      String branch,
+      String semester,
+      String div}) async {
     await FirebaseFirestore.instance
         .collection(branch)
         .doc(semester)

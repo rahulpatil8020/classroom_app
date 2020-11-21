@@ -324,7 +324,7 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
         "Branch": widget.td.branch,
         "Division": widget.td.div,
       };
-      databaseService.updateSubjectDataMain(subjectMap, widget.td.email, widget.td.uid, widget.td.branch, widget.td.sem, widget.td.div);
+      databaseService.updateSubjectDataMain(div: widget.td.div,branch: widget.td.branch,email: widget.td.email,id: widget.td.uid, semester: widget.td.sem, subjectData: subjectMap);
       databaseService
           .updateSubjectData(subjectMap, widget.td.email, widget.td.uid)
           .then((value) {
