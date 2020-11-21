@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 
 class AddSubjectTest extends StatefulWidget {
   final TeacherDetails td;
-  AddSubjectTest(this.td);
+  final Map teacherInfo;
+  AddSubjectTest({this.td, this.teacherInfo});
   @override
   _AddSubjectTestState createState() => _AddSubjectTestState();
 }
@@ -32,14 +33,15 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
         "Branch": widget.td.branch,
         "Division": widget.td.div,
       };
-
+      databaseService.addTeacherDataMain(widget.teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
+      databaseService.addSubjectDataMain(subjectMap,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
       databaseService.addSubjectData(subjectMap, widget.td.email).then((value) {
         setState(() {
           _isLoading = false;
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddSubjectTest(widget.td)));
+                  builder: (context) => AddSubjectTest(td: widget.td,)));
         });
       });
     }
@@ -231,6 +233,8 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
                                       print(widget.td.subject);
                                       print(widget.td.sem);
                                       print(widget.td.div);
+
+
                                     });
                                   },
                                   child: ListTile(

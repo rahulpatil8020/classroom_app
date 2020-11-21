@@ -188,7 +188,7 @@ class _DisplaySubjectListState extends State<DisplaySubjectList> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddSubjectTest(widget.td)));
+                  builder: (context) => AddSubjectTest(td: widget.td)));
         },
       ),
     );

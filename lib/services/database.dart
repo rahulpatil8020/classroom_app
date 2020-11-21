@@ -91,7 +91,8 @@ class DatabaseService {
   }
 
   Future<void> addTeacherDataMain(Map questionData, String email, String branch, String semester, String div) async {
-    await FirebaseFirestore.instance.collection(branch)
+    await FirebaseFirestore.instance
+        .collection(branch)
         .doc(semester)
         .collection(div)
         .doc("Teacher_Info")
@@ -100,6 +101,20 @@ class DatabaseService {
       print(e.toString());
     });
   }
+
+  Future<void> addSubjectDataMain(Map subjectData, String email, String branch, String semester, String div) async {
+    await FirebaseFirestore.instance
+        .collection(branch)
+        .doc(semester)
+        .collection(div)
+        .doc("Teacher_Info")
+        .collection("Subject_Data")
+        .add(subjectData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
 
   Future<void> addSubjectData(Map subjectData, String email) async {
     await FirebaseFirestore.instance
@@ -111,6 +126,8 @@ class DatabaseService {
       print(e.toString());
     });
   }
+
+
 
   Future<void> updateSubjectData(Map subjectData, String email, String id) async {
     await FirebaseFirestore.instance
