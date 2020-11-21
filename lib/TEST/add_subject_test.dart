@@ -324,7 +324,7 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
         "Branch": widget.td.branch,
         "Division": widget.td.div,
       };
-
+      databaseService.updateSubjectDataMain(subjectMap, widget.td.email, widget.td.uid, widget.td.branch, widget.td.sem, widget.td.div);
       databaseService
           .updateSubjectData(subjectMap, widget.td.email, widget.td.uid)
           .then((value) {
@@ -340,6 +340,7 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
   }
 
   deletedata() async {
+    databaseService.deleteSubjectDataMain(widget.td.email, widget.td.uid, widget.td.branch, widget.td.sem, widget.td.div);
     databaseService.deleteSubjectData(widget.td.email, widget.td.uid);
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => DisplaySubjectList(widget.td)));

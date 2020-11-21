@@ -151,7 +151,7 @@ class DatabaseService {
     });
   }
 
-  Future<void> deleteSubjectDataMain(Map subjectData, String email, String id,String branch, String semester, String div) async {
+  Future<void> deleteSubjectDataMain(String email, String id,String branch, String semester, String div) async {
     await FirebaseFirestore.instance
         .collection(branch)
         .doc(semester)
