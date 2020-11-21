@@ -29,12 +29,10 @@ class DatabaseService {
       String div,
       Map studentData}) async {
     await FirebaseFirestore.instance
-        .collection("Branch")
-        .doc(branch)
-        .collection(semester)
-        .doc(div)
-        .collection("Student Info")
-        .doc(studentEmail)
+        .collection(branch)
+        .doc(semester)
+        .collection(div)
+        .doc("Student Info")
         .set(studentData)
         .catchError((e) {
       print(e.toString());
