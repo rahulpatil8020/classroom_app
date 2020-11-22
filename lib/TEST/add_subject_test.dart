@@ -44,15 +44,19 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
         "role": "Teacher",
       };
 
-      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
-      databaseService.addSubjectDataMain(subjectMap,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
+      databaseService.addTeacherDataMain(teacherInfo, widget.td.email,
+          widget.td.branch, widget.td.sem, widget.td.div,widget.td.role);
+      databaseService.addSubjectDataMain(subjectMap, widget.td.email,
+          widget.td.branch, widget.td.sem, widget.td.div,widget.td.role);
       databaseService.addSubjectData(subjectMap, widget.td.email).then((value) {
         setState(() {
           _isLoading = false;
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddSubjectTest(td: widget.td,)));
+                  builder: (context) => AddSubjectTest(
+                        td: widget.td,
+                      )));
         });
       });
     }
@@ -244,8 +248,6 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
                                       print(widget.td.subject);
                                       print(widget.td.sem);
                                       print(widget.td.div);
-
-
                                     });
                                   },
                                   child: ListTile(
@@ -324,9 +326,15 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
         "Branch": widget.td.branch,
         "Division": widget.td.div,
       };
-      databaseService.updateSubjectDataMain(div: widget.td.div,branch: widget.td.branch,email: widget.td.email,id: widget.td.uid, semester: widget.td.sem, subjectData: subjectMap);
-      databaseService
-          .updateSubjectData(subjectMap, widget.td.email, widget.td.uid)
+      // databaseService
+      //     .updateSubjectDataMain(
+      //         div: widget.td.div,
+      //         branch: widget.td.branch,
+      //         id: widget.td.uid,
+      //         semester: widget.td.sem,
+      //         subjectData: subjectMap)
+          databaseService
+              .updateSubjectData(subjectMap, widget.td.email, widget.td.uid)
           .then((value) {
         setState(() {
           _isLoading = false;
@@ -340,8 +348,9 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
   }
 
   deletedata() async {
-    databaseService.deleteSubjectDataMain(widget.td.email, widget.td.uid, widget.td.branch, widget.td.sem, widget.td.div);
-    databaseService.deleteSubjectData(widget.td.email, widget.td.uid);
+    databaseService.deleteSubjectDataMain(widget.td.email, widget.td.uid,
+        widget.td.branch, widget.td.sem, widget.td.div,widget.td.role);
+    // databaseService.deleteSubjectData(widget.td.email, widget.td.uid);
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => DisplaySubjectList(widget.td)));
   }
@@ -481,6 +490,7 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
                         print(widget.td.branch);
                         print(widget.td.sem);
                         print(widget.td.div);
+                        print(widget.td.uid);
 
                         _showAlertDialog("Subject Added",
                             "Subject: ${widget.td.subject}\n ${widget.td.branch}\n ${widget.td.sem}\n ${widget.td.div}\n");

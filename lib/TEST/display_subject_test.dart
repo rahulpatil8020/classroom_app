@@ -140,7 +140,7 @@ class _DisplaySubjectListState extends State<DisplaySubjectList> {
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection("Teacher_Info")
+            .collection("User")
             .doc(widget.td.email)
             .collection("Subject_Data")
             .snapshots(),

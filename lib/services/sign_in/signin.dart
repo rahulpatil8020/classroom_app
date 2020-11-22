@@ -1,18 +1,22 @@
 import 'package:classroom/TEST/create_teacher_info.dart';
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/student_info.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/auth.dart';
+import 'package:classroom/services/database.dart';
 import 'package:classroom/services/signup/signup.dart';
 import 'package:classroom/views/main_screen.dart';
 import 'package:classroom/views/teacher_main_screen/teacher_main_screen.dart';
 import 'package:classroom/widgets/appBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
   final TeacherDetails td;
-  SignIn(this.td);
+  final StudentInfo si;
+  SignIn(this.td, this.si);
   @override
   _SignInState createState() => _SignInState();
 }
@@ -21,6 +25,7 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   String email, password;
   AuthService authService = new AuthService();
+  DatabaseService databaseService = new DatabaseService();
   bool isEmail(String em) {
     String p =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -46,7 +51,7 @@ class _SignInState extends State<SignIn> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TeacherMainScreen(widget.td)));
+                    builder: (context) => RouteDecide(td: widget.td,email: email,password: password,si: widget.si,)));
             // MainScreen
           }
         });
@@ -99,7 +104,6 @@ class _SignInState extends State<SignIn> {
                           ),
                           onChanged: (val) {
                             email = val;
-                            widget.td.email = email;
                           },
                         ),
                         SizedBox(
@@ -167,7 +171,7 @@ class _SignInState extends State<SignIn> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            SignUp(widget.td)));
+                                            SignUp(widget.td,widget.si)));
                                 print("Clicked on don't have an Account");
                               },
                               child: Text(
@@ -181,7 +185,7 @@ class _SignInState extends State<SignIn> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            SignUp(widget.td)));
+                                            SignUp(widget.td, widget.si)));
                                 print("Clicked on Sign Up");
                               },
                               child: Text(
@@ -247,3 +251,45 @@ class _SignInState extends State<SignIn> {
     );
   }
 }
+
+
+
+
+class RouteDecide extends StatelessWidget {
+  final TeacherDetails td;
+  final StudentInfo si;
+  final String email;
+  final String password;
+  String role;
+  RouteDecide({this.td,this.si,this.password,this.email});
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection("User")
+          .doc(email)
+          .snapshots(),
+      builder: (context,snapshot){
+        role = snapshot.data["role"];
+        if(role == "Student"){
+          print("This");
+          si.email = email;
+          si.password = password;
+          return  MainScreen(si);
+        }
+        else{
+          td.email = email;
+          td.password = password;
+          return TeacherMainScreen(td);
+        }
+
+        // } else return Center(
+        //   child: Container(
+        //     child: Text("Some Error"),
+        //   ),
+        // );
+      },
+    );
+  }
+}
+

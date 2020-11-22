@@ -1,8 +1,32 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StudentInfo {
-  String _branch, _div, _fname, _mname, _lname, _rollno, _uid, _password, _email, _aboutyou, _role;
+  String _branch, _div, _fname, _mname, _lname, _rollno, _uid, _password, _email, _aboutyou, _role, sem;
   Timestamp _bod;
+  DateTime _pickeddate;
+
+
+  StudentInfo([
+      this._branch,
+      this._div,
+      this._fname,
+      this._mname,
+      this._lname,
+      this._rollno,
+      this._uid,
+      this._password,
+      this._email,
+      this._aboutyou,
+      this._role,
+      this._bod,
+      this.sem,
+      this._pickeddate]);
+
+  DateTime get pickeddate => _pickeddate;
+
+  set pickeddate(DateTime value) {
+    _pickeddate = value;
+  }
 
   get role => _role;
 
