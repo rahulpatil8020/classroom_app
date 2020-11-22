@@ -191,15 +191,18 @@ class _TestTeacherDetailsState extends State<TestTeacherDetails> {
                       "DOB": widget.td.pickeddate,
                       "Email": widget.td.email,
                       "password": widget.td.password,
+                      "role": "Teacher",
                     };
+
 
                     databaseService
                         .addTeacherData(teacherInfo, widget.td.email)
                         .then((value) {
-                      Navigator.push(
+                      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddSubjectTest(widget.td)));
+                              builder: (context) => AddSubjectTest(td: widget.td)));
                     });
                   }
                   // signUp();

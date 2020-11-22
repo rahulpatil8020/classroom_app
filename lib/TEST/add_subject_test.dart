@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 
 class AddSubjectTest extends StatefulWidget {
   final TeacherDetails td;
-  AddSubjectTest(this.td);
+  AddSubjectTest({this.td});
   @override
   _AddSubjectTestState createState() => _AddSubjectTestState();
 }
@@ -33,13 +33,26 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
         "Division": widget.td.div,
       };
 
+      Map<String, dynamic> teacherInfo = {
+        "first_name": widget.td.fname,
+        "last_name": widget.td.lname,
+        "middle_name": widget.td.mname,
+        "Registration ID": widget.td.registrationId,
+        "DOB": widget.td.pickeddate,
+        "Email": widget.td.email,
+        "password": widget.td.password,
+        "role": "Teacher",
+      };
+
+      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
+      databaseService.addSubjectDataMain(subjectMap,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
       databaseService.addSubjectData(subjectMap, widget.td.email).then((value) {
         setState(() {
           _isLoading = false;
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => AddSubjectTest(widget.td)));
+                  builder: (context) => AddSubjectTest(td: widget.td,)));
         });
       });
     }
@@ -231,6 +244,8 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
                                       print(widget.td.subject);
                                       print(widget.td.sem);
                                       print(widget.td.div);
+
+
                                     });
                                   },
                                   child: ListTile(
@@ -309,7 +324,7 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
         "Branch": widget.td.branch,
         "Division": widget.td.div,
       };
-
+      databaseService.updateSubjectDataMain(div: widget.td.div,branch: widget.td.branch,email: widget.td.email,id: widget.td.uid, semester: widget.td.sem, subjectData: subjectMap);
       databaseService
           .updateSubjectData(subjectMap, widget.td.email, widget.td.uid)
           .then((value) {
@@ -325,6 +340,7 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
   }
 
   deletedata() async {
+    databaseService.deleteSubjectDataMain(widget.td.email, widget.td.uid, widget.td.branch, widget.td.sem, widget.td.div);
     databaseService.deleteSubjectData(widget.td.email, widget.td.uid);
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => DisplaySubjectList(widget.td)));
