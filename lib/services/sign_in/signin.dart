@@ -23,7 +23,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-  String email, password;
+  String email, password, id;
   AuthService authService = new AuthService();
   DatabaseService databaseService = new DatabaseService();
   bool isEmail(String em) {
@@ -42,6 +42,7 @@ class _SignInState extends State<SignIn> {
       });
       try {
         await authService.signInEmailAndPass(email, password).then((value) {
+          id = value.uid;
           if (value != null) {
             setState(() {
               _isLoading = false;
@@ -51,7 +52,7 @@ class _SignInState extends State<SignIn> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RouteDecide(td: widget.td,email: email,password: password,si: widget.si,)));
+                    builder: (context) => RouteDecide(td: widget.td,email: email,password: password,si: widget.si,id : id)));
             // MainScreen
           }
         });
@@ -258,10 +259,10 @@ class _SignInState extends State<SignIn> {
 class RouteDecide extends StatelessWidget {
   final TeacherDetails td;
   final StudentInfo si;
-  final String email;
+  final String email,id;
   final String password;
   String role;
-  RouteDecide({this.td,this.si,this.password,this.email});
+  RouteDecide({this.td,this.si,this.password,this.email, this.id});
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -272,12 +273,13 @@ class RouteDecide extends StatelessWidget {
       builder: (context,snapshot){
         role = snapshot.data["role"];
         if(role == "Student"){
-          print("This");
+          si.uid = id;
           si.email = email;
           si.password = password;
           return  MainScreen(si);
         }
         else{
+          td.uid = id;
           td.email = email;
           td.password = password;
           return TeacherMainScreen(td);

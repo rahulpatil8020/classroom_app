@@ -1,7 +1,10 @@
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/student_info.dart';
 import 'package:flutter/material.dart';
 
 class StudyMaterial extends StatelessWidget {
+  StudentInfo si;
+
   final List subjectNames = [
     "Database Management System",
     "Computer Networks",
@@ -45,6 +48,7 @@ class StudyMaterial extends StatelessWidget {
           ),
           onTap: () {
             debugPrint('tap');
+            print(si.email);
           },
         );
       },
