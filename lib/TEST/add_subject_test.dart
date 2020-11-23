@@ -220,7 +220,7 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
                     ),
                     StreamBuilder(
                       stream: FirebaseFirestore.instance
-                          .collection("Teacher_Info")
+                          .collection("User")
                           .doc(widget.td.email)
                           .collection("Subject_Data")
                           .snapshots(),
@@ -349,9 +349,7 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
   }
 
   deletedata() async {
-    databaseService.deleteSubjectDataMain(widget.td.email, widget.td.uid,
-        widget.td.branch, widget.td.sem, widget.td.div);
-    // databaseService.deleteSubjectData(widget.td.email, widget.td.uid);
+    databaseService.deleteSubjectData(widget.td.email, widget.td.uid);
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => DisplaySubjectList(widget.td)));
   }
