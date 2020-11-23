@@ -27,19 +27,19 @@ class _AttendanceState extends State<Attendance> {
             .doc(widget.td.branch)
             .collection(widget.td.sem)
             .doc(widget.td.div)
-            .collection("Student Info").snapshots(),
+            .collection("Student").orderBy("RollNo").snapshots(),
         builder: (context, snapshot) {
           return snapshot.data == null
-              ? Container()
+              ? Container(
+            child: CircularProgressIndicator(),
+          )
               : ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot course = snapshot.data.documents[index];
-                    return QuizTile(
-                        course['FirstName'],
-                        course['quizImageURL'],
-                        course['quizTitle'],
-                        course['quizId']);
+                    return StudentTile(
+                        name: course['RollNo'],
+                        );
                   });
         },
       ),
@@ -73,62 +73,81 @@ class _AttendanceState extends State<Attendance> {
   }
 }
 
-class QuizTile extends StatelessWidget {
-  final String imgURL, title, desc, id;
-  QuizTile(this.desc, this.imgURL, this.title, this.id);
+// class StudentTile extends StatelessWidget {
+//   final String imgURL, title, desc, id;
+//   StudentTile(this.desc, this.imgURL, this.title, this.id);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return GestureDetector(
+//       onTap: () {
+//         Navigator.push(
+//             context, MaterialPageRoute(builder: (context) => PlayQuiz(id)));
+//       },
+//       child: Container(
+//         height: 150,
+//         margin: EdgeInsets.only(bottom: 8),
+//         child: Stack(
+//           children: [
+//             ClipRRect(
+//               borderRadius: BorderRadius.circular(10),
+//               child: Image.network(
+//                 imgURL,
+//                 width: MediaQuery.of(context).size.width - 48,
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//             Container(
+//               decoration: BoxDecoration(
+//                 color: Color.fromRGBO(20, 20, 20, 0.5),
+//                 borderRadius: BorderRadius.circular(10),
+//               ),
+//               alignment: Alignment.center,
+//               child: Column(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Text(
+//                     title,
+//                     style: TextStyle(
+//                       color: Colors.white,
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.w600,
+//                     ),
+//                   ),
+//                   SizedBox(
+//                     height: 6,
+//                   ),
+//                   Text(
+//                     desc,
+//                     style: TextStyle(
+//                       color: Colors.white70,
+//                       fontSize: 15,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+class StudentTile extends StatelessWidget {
+  final String name;
+  StudentTile({this.name});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PlayQuiz(id)));
+        print(name);
       },
       child: Container(
-        height: 150,
-        margin: EdgeInsets.only(bottom: 8),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                imgURL,
-                width: MediaQuery.of(context).size.width - 48,
-                fit: BoxFit.cover,
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Color.fromRGBO(20, 20, 20, 0.5),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Text(
-                    desc,
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 15,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+        // child: Stack(),
+        child: Text(name),
       ),
     );
   }

@@ -41,6 +41,7 @@ class _SignUpState extends State<SignUp> {
       await authService
           .signUpWithEmailAndPassword(widget.si.email, widget.si.password)
           .then((value) {
+            widget.si.uid = value.uid;
         if (value != null) {
           setState(() {
             _isloading = false;
@@ -49,8 +50,6 @@ class _SignUpState extends State<SignUp> {
         }
       });
 
-
-      widget.si.uid = randomAlphaNumeric(10);
       Map<String, String> userMap = {
         "FirstName": widget.si.fname,
         "MiddleName": widget.si.mname,

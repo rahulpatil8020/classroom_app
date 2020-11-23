@@ -196,6 +196,7 @@ class _TestTeacherDetailsState extends State<TestTeacherDetails> {
                       "Email": widget.td.email,
                       "password": widget.td.password,
                       "role": "Teacher",
+                      "UID" : widget.td.uid,
                     };
 
 
