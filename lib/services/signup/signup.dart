@@ -66,7 +66,7 @@ class _SignUpState extends State<SignUp> {
       };
       databaseService.addUserData(userMap, widget.si.email);
       databaseService
-          .addFieldsData(
+          .addStudentsData(
               branch: widget.si.branch,
               div: widget.si.div,
               semester: widget.si.sem,

@@ -24,7 +24,7 @@ class DatabaseService {
   //   });
   // }
 
-  Future<void> addFieldsData({
+  Future<void> addStudentsData({
       String branch,
       String semester,
       String studentEmail,
@@ -249,6 +249,34 @@ class DatabaseService {
       print(e.toString());
     });
   }
+
+
+
+
+
+  Future<void> addStudentsAttandanceDetails({
+    @required String branch,
+    @required String semester,
+    @required String div,
+    @required String id,
+    @required String pressed,
+    @required String field,
+    @required Map studentData}) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semester)
+        .doc(div)
+        .collection("Student")
+        .doc(id)
+        .collection(pressed)
+        .doc(field)
+        .set(studentData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
 }
 
 // getStudentData(String email) async {
