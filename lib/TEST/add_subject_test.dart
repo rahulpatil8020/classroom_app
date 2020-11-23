@@ -42,12 +42,13 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
         "Email": widget.td.email,
         "password": widget.td.password,
         "role": "Teacher",
+        "UID" : widget.td.uid,
       };
 
       databaseService.addTeacherDataMain(teacherInfo, widget.td.email,
-          widget.td.branch, widget.td.sem, widget.td.div,widget.td.role);
+          widget.td.branch, widget.td.sem, widget.td.div,widget.td.uid);
       databaseService.addSubjectDataMain(subjectMap, widget.td.email,
-          widget.td.branch, widget.td.sem, widget.td.div,widget.td.role);
+          widget.td.branch, widget.td.sem, widget.td.div);
       databaseService.addSubjectData(subjectMap, widget.td.email).then((value) {
         setState(() {
           _isLoading = false;
@@ -349,7 +350,7 @@ class _EditSubjectTestState extends State<EditSubjectTest> {
 
   deletedata() async {
     databaseService.deleteSubjectDataMain(widget.td.email, widget.td.uid,
-        widget.td.branch, widget.td.sem, widget.td.div,widget.td.role);
+        widget.td.branch, widget.td.sem, widget.td.div);
     // databaseService.deleteSubjectData(widget.td.email, widget.td.uid);
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => DisplaySubjectList(widget.td)));

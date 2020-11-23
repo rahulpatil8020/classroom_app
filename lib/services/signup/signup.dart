@@ -73,8 +73,7 @@ class _SignUpState extends State<SignUp> {
               semester: widget.si.sem,
               studentEmail: widget.si.email,
               id: widget.si.uid,
-              studentData: userMap,
-      role: widget.si.role)
+              studentData: userMap)
           .then((value) {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => MainScreen(widget.si)));

@@ -29,7 +29,11 @@ class _TestTeacherDetailsState extends State<TestTeacherDetails> {
 
   signup() async {
     await authService.signUpWithEmailAndPassword(
-        widget.td.email, widget.td.password);
+        widget.td.email, widget.td.password).then((value) {
+          widget.td.uid = value.uid;
+          print(widget.td.uid);
+    }
+     );
   }
 
   @override
@@ -198,7 +202,7 @@ class _TestTeacherDetailsState extends State<TestTeacherDetails> {
                     databaseService
                         .addUserData(teacherInfo, widget.td.email)
                         .then((value) {
-                      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div,widget.td.role);
+                      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div,widget.td.uid);
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

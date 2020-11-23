@@ -29,7 +29,6 @@ class DatabaseService {
       String semester,
       String studentEmail,
       String div,
-        String role,
         String id,
       Map studentData}) async {
     await FirebaseFirestore.instance
@@ -37,7 +36,7 @@ class DatabaseService {
         .doc(branch)
         .collection(semester)
         .doc(div)
-        .collection(role)
+        .collection("Student")
         .doc(id)
         .set(studentData)
         .catchError((e) {
@@ -85,24 +84,26 @@ class DatabaseService {
     });
   }
 
-  Future<void> addTeacherDataMain(Map questionData, String email, String branch, String semester, String div, String role) async {
+  Future<void> addTeacherDataMain(Map questionData, String email, String branch, String semester, String div, String id) async {
     await FirebaseFirestore.instance
-        .collection(branch)
-        .doc(semester)
-        .collection(div)
-        .doc(role)
+        .collection("Branch")
+        .doc(branch)
+        .collection(semester)
+        .doc(div)
+        .collection("Teacher")
+        .doc(id)
         .set(questionData)
         .catchError((e) {
       print(e.toString());
     });
   }
 
-  Future<void> addSubjectDataMain(Map subjectData, String email, String branch, String semester, String div, String role) async {
+  Future<void> addSubjectDataMain(Map subjectData, String email, String branch, String semester, String div) async {
     await FirebaseFirestore.instance
         .collection(branch)
         .doc(semester)
         .collection(div)
-        .doc(role)
+        .doc("Teacher")
         .collection("Subject_Data")
         .add(subjectData)
         .catchError((e) {
@@ -127,13 +128,12 @@ class DatabaseService {
       String id,
       String branch,
       String semester,
-        String role,
       String div}) async {
     await FirebaseFirestore.instance
         .collection(branch)
         .doc(semester)
         .collection(div)
-        .doc(role)
+        .doc("Teacher")
         .collection("Subject_Data")
         .doc(id)
         .update(subjectData)
@@ -160,12 +160,12 @@ class DatabaseService {
     });
   }
 
-  Future<void> deleteSubjectDataMain(String email, String id,String branch, String semester, String div, String role) async {
+  Future<void> deleteSubjectDataMain(String email, String id,String branch, String semester, String div) async {
     await FirebaseFirestore.instance
         .collection(branch)
         .doc(semester)
         .collection(div)
-        .doc(role)
+        .doc("Teacher")
         .collection("Subject_Data").doc(id)
         .delete()
         .catchError((e) {
