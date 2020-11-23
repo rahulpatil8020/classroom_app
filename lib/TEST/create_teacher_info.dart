@@ -196,9 +196,9 @@ class _TestTeacherDetailsState extends State<TestTeacherDetails> {
 
 
                     databaseService
-                        .addTeacherData(teacherInfo, widget.td.email)
+                        .addUserData(teacherInfo, widget.td.email)
                         .then((value) {
-                      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div);
+                      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div,widget.td.role);
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

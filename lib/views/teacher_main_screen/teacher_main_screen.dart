@@ -28,7 +28,7 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
       appBar: appBar(context),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection("Teacher_Info")
+            .collection("User")
             .doc(widget.td.email)
             .snapshots(),
         builder: (context, snapshot) {

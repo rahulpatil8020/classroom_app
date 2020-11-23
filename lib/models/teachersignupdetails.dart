@@ -1,7 +1,14 @@
 class TeacherDetails{
-  String _fname, _mname,_lname, _gender, _registrationId, _uid, _email, _password, _sem, _div, _subject, _branch;
+  String _fname, _mname,_lname, _gender, _registrationId, _uid, _email, _password, _sem, _div, _subject, _branch, _role;
   DateTime _pickeddate;
-  TeacherDetails([this._age,this._lname,this._fname,this._gender,this._mname,this._registrationId,this._subject,this._uid,this._email, this._password,this._pickeddate, this._branch,this._div,this._sem]);
+  TeacherDetails([this._age,this._lname,this._fname,this._gender,this._mname,this._registrationId,this._subject,this._uid,this._email, this._password,this._pickeddate, this._branch,this._div,this._sem, this._role]);
+
+  get role => _role;
+
+  set role(value) {
+    value = "Teacher";
+    _role = value;
+  }
 
   // get pickeddate => _pickeddate;
   //

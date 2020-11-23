@@ -1,10 +1,12 @@
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/student_info.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/auth.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/services/sign_in/signin.dart';
 import 'package:classroom/views/main_screen.dart';
 import 'package:classroom/widgets/widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 
@@ -12,32 +14,18 @@ import '../../widgets/appBar.dart';
 
 class SignUp extends StatefulWidget {
   final TeacherDetails td;
-  SignUp(this.td);
+  final StudentInfo si;
+  SignUp(this.td, this.si);
   @override
   _SignUpState createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  String email,
-      password,
-      fname,
-      mname,
-      lname,
-      userId,
-      div,
-      semister,
-      branch,
-      aboutyou,
-      branchId,
-      semisterId,
-      divID,
-      rollno;
-
-  DateTime pickeddate;
   AuthService authService = new AuthService();
   bool _isloading = false;
   DatabaseService databaseService = new DatabaseService();
+  DocumentReference df;
   bool isEmail(String em) {
     String p =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -51,7 +39,7 @@ class _SignUpState extends State<SignUp> {
         _isloading = true;
       });
       await authService
-          .signUpWithEmailAndPassword(email, password)
+          .signUpWithEmailAndPassword(widget.si.email, widget.si.password)
           .then((value) {
         if (value != null) {
           setState(() {
@@ -61,34 +49,35 @@ class _SignUpState extends State<SignUp> {
         }
       });
 
-      userId = randomAlphaNumeric(20);
-      branchId = randomAlphaNumeric(5);
-      semisterId = randomAlphaNumeric(5);
-      divID = randomAlphaNumeric(3);
+
+      widget.si.uid = randomAlphaNumeric(10);
       Map<String, String> userMap = {
-        "FirstName": fname,
-        "MiddleName": mname,
-        "LastName": lname,
-        "Email": email,
-        "RollNo": rollno,
-        "password": password,
-        "Dataofbirth": pickeddate.toString(),
-        "Branch": branch,
-        "Semister": semister,
-        "UserID": userId,
-        "Division": div
+        "FirstName": widget.si.fname,
+        "MiddleName": widget.si.mname,
+        "LastName": widget.si.lname,
+        "Email": widget.si.email,
+        "RollNo": widget.si.rollno,
+        "password": widget.si.password,
+        "Dataofbirth": widget.si.pickeddate.toString(),
+        "Branch": widget.si.branch,
+        "Semister": widget.si.sem,
+        "UserID": widget.si.uid,
+        "Division": widget.si.div,
+        "role": "Student",
       };
-      databaseService.setUserData(studentData: userMap, studentEmail: email);
+      databaseService.addUserData(userMap, widget.si.email);
       databaseService
           .addFieldsData(
-              branch: branch,
-              div: div,
-              semester: semister,
-              studentEmail: email,
-              studentData: userMap)
+              branch: widget.si.branch,
+              div: widget.si.div,
+              semester: widget.si.sem,
+              studentEmail: widget.si.email,
+              id: widget.si.uid,
+              studentData: userMap,
+      role: widget.si.role)
           .then((value) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => MainScreen(email)));
+            MaterialPageRoute(builder: (context) => MainScreen(widget.si)));
       });
     }
   }
@@ -97,7 +86,7 @@ class _SignUpState extends State<SignUp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    pickeddate = DateTime.now();
+    widget.si.pickeddate = DateTime.now();
   }
 
   @override
@@ -135,7 +124,7 @@ class _SignUpState extends State<SignUp> {
                             hintText: "First Name",
                           ),
                           onChanged: (val) {
-                            fname = val;
+                            widget.si.fname = val;
                           },
                         ),
                         SizedBox(
@@ -149,7 +138,7 @@ class _SignUpState extends State<SignUp> {
                             hintText: "Middle Name",
                           ),
                           onChanged: (val) {
-                            mname = val;
+                            widget.si.mname = val;
                           },
                         ),
                         SizedBox(
@@ -163,7 +152,7 @@ class _SignUpState extends State<SignUp> {
                             hintText: "Last Name",
                           ),
                           onChanged: (val) {
-                            lname = val;
+                            widget.si.lname = val;
                           },
                         ),
                         SizedBox(
@@ -183,7 +172,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                               keyboardType: TextInputType.number,
                               onChanged: (val) {
-                                rollno = val;
+                                widget.si.rollno = val;
                               },
                               cursorWidth: 10,
                             ),
@@ -203,7 +192,7 @@ class _SignUpState extends State<SignUp> {
                                 hintText: "Div.",
                               ),
                               onChanged: (val) {
-                                div = val;
+                                widget.si.div = val;
                               },
                               cursorWidth: 10,
                             ),
@@ -214,69 +203,65 @@ class _SignUpState extends State<SignUp> {
                         ),
                         ListTile(
                           title: Text(
-                              "Date of Birth : ${pickeddate.day}/${pickeddate.month}/${pickeddate.year}"),
+                              "Date of Birth : ${widget.si.pickeddate.day}/${widget.si.pickeddate.month}/${widget.si.pickeddate.year}"),
                           trailing: Icon(Icons.keyboard_arrow_down),
                           onTap: _pickDate,
                         ),
-                        Row(
-                          children: [
-                            DropdownButton<String>(
-                              items: [
-                                DropdownMenuItem(
-                                    value: "Computer Engineering",
-                                    child: Text("Computer Engineering")),
-                                DropdownMenuItem(
-                                    value: "E&TC", child: Text("E&TC")),
-                                DropdownMenuItem(
-                                    value: "Mechanical Engineering",
-                                    child: Text("Mechanical Engineering")),
-                                DropdownMenuItem(
-                                    value: "Civil Engineering",
-                                    child: Text("Civil Engineering")),
-                                DropdownMenuItem(
-                                    value: "Chemical Engineering",
-                                    child: Text("Chemical Engineering")),
-                              ],
-                              onChanged: (val) {
-                                setState(() {});
-                                branch = val;
-                                print(branch);
-                              },
-                              hint: Text("Branch"),
-                              value: branch,
-                            ),
-                            SizedBox(
-                              width: 40,
-                            ),
-                            DropdownButton<String>(
-                              items: [
-                                DropdownMenuItem(
-                                    value: "Sem 1", child: Text("Sem 1")),
-                                DropdownMenuItem(
-                                    value: "Sem 2", child: Text("Sem 2")),
-                                DropdownMenuItem(
-                                    value: "Sem 3", child: Text("Sem 3")),
-                                DropdownMenuItem(
-                                    value: "Sem 4", child: Text("Sem 4")),
-                                DropdownMenuItem(
-                                    value: "Sem 5", child: Text("Sem 5")),
-                                DropdownMenuItem(
-                                    value: "Sem 6", child: Text("Sem 6")),
-                                DropdownMenuItem(
-                                    value: "Sem 7", child: Text("Sem 7")),
-                                DropdownMenuItem(
-                                    value: "Sem 8", child: Text("Sem 8")),
-                              ],
-                              onChanged: (val) {
-                                setState(() {
-                                  semister = val;
-                                  print(semister);
-                                });
-                              },
-                              hint: Text("Semester"),
-                              value: semister,
-                            ),
+                        DropdownButton<String>(
+                          items: [
+                            DropdownMenuItem(
+                                value: "Computer Engineering",
+                                child: Text("Computer Engineering")),
+                            DropdownMenuItem(
+                                value: "E&TC", child: Text("E&TC")),
+                            DropdownMenuItem(
+                                value: "Mechanical Engineering",
+                                child: Text("Mechanical Engineering")),
+                            DropdownMenuItem(
+                                value: "Civil Engineering",
+                                child: Text("Civil Engineering")),
+                            DropdownMenuItem(
+                                value: "Chemical Engineering",
+                                child: Text("Chemical Engineering")),
                           ],
+                          onChanged: (val) {
+                            setState(() {});
+                            widget.si.branch = val;
+                            print(widget.si.branch);
+                          },
+                          hint: Text("Branch"),
+                          value: widget.si.branch,
+                        ),
+                        SizedBox(
+                          width: 40,
+                        ),
+                        DropdownButton<String>(
+                          items: [
+                            DropdownMenuItem(
+                                value: "Sem 1", child: Text("Sem 1")),
+                            DropdownMenuItem(
+                                value: "Sem 2", child: Text("Sem 2")),
+                            DropdownMenuItem(
+                                value: "Sem 3", child: Text("Sem 3")),
+                            DropdownMenuItem(
+                                value: "Sem 4", child: Text("Sem 4")),
+                            DropdownMenuItem(
+                                value: "Sem 5", child: Text("Sem 5")),
+                            DropdownMenuItem(
+                                value: "Sem 6", child: Text("Sem 6")),
+                            DropdownMenuItem(
+                                value: "Sem 7", child: Text("Sem 7")),
+                            DropdownMenuItem(
+                                value: "Sem 8", child: Text("Sem 8")),
+                          ],
+                          onChanged: (val) {
+                            setState(() {
+                              widget.si.sem = val;
+                              print(widget.si.sem);
+                            });
+                          },
+                          hint: Text("Semester"),
+                          value: widget.si.sem,
                         ),
                         SizedBox(
                           height: size.height * 0.01,
@@ -292,7 +277,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           keyboardType: TextInputType.emailAddress,
                           onChanged: (val) {
-                            email = val;
+                            widget.si.email = val;
                           },
                         ),
                         SizedBox(
@@ -309,7 +294,7 @@ class _SignUpState extends State<SignUp> {
                             hintText: "Password",
                           ),
                           onChanged: (val) {
-                            password = val;
+                            widget.si.password = val;
                           },
                         ),
                         SizedBox(
@@ -334,7 +319,7 @@ class _SignUpState extends State<SignUp> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              SignIn(widget.td)));
+                                              SignIn(widget.td,widget.si)));
                                   print(
                                       "Clicked on Sign IN Already have account");
                                 },
@@ -348,7 +333,7 @@ class _SignUpState extends State<SignUp> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              SignIn(widget.td)));
+                                              SignIn(widget.td,widget.si)));
                                   print("Clicked on Sign IN");
                                 },
                                 child: Text(
@@ -371,14 +356,14 @@ class _SignUpState extends State<SignUp> {
   _pickDate() async {
     DateTime date = await showDatePicker(
         context: context,
-        initialDate: pickeddate,
+        initialDate: widget.si.pickeddate,
         firstDate: DateTime(DateTime.now().year - 50),
         lastDate: DateTime.now());
 
     if (date != null) {
       setState(() {
-        pickeddate = date;
-        print(pickeddate);
+        widget.si.pickeddate = date;
+        print(widget.si.pickeddate);
       });
     }
   }
