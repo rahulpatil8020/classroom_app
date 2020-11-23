@@ -38,7 +38,8 @@ class _AttendanceState extends State<Attendance> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot course = snapshot.data.documents[index];
                     return StudentTile(
-                        name: course['RollNo'],
+                        rollno: course['RollNo'],
+                      name: course["FirstName"]
                         );
                   });
         },
@@ -73,82 +74,39 @@ class _AttendanceState extends State<Attendance> {
   }
 }
 
-// class StudentTile extends StatelessWidget {
-//   final String imgURL, title, desc, id;
-//   StudentTile(this.desc, this.imgURL, this.title, this.id);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         Navigator.push(
-//             context, MaterialPageRoute(builder: (context) => PlayQuiz(id)));
-//       },
-//       child: Container(
-//         height: 150,
-//         margin: EdgeInsets.only(bottom: 8),
-//         child: Stack(
-//           children: [
-//             ClipRRect(
-//               borderRadius: BorderRadius.circular(10),
-//               child: Image.network(
-//                 imgURL,
-//                 width: MediaQuery.of(context).size.width - 48,
-//                 fit: BoxFit.cover,
-//               ),
-//             ),
-//             Container(
-//               decoration: BoxDecoration(
-//                 color: Color.fromRGBO(20, 20, 20, 0.5),
-//                 borderRadius: BorderRadius.circular(10),
-//               ),
-//               alignment: Alignment.center,
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   Text(
-//                     title,
-//                     style: TextStyle(
-//                       color: Colors.white,
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                   ),
-//                   SizedBox(
-//                     height: 6,
-//                   ),
-//                   Text(
-//                     desc,
-//                     style: TextStyle(
-//                       color: Colors.white70,
-//                       fontSize: 15,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 
-class StudentTile extends StatelessWidget {
-  final String name;
-  StudentTile({this.name});
+class StudentTile extends StatefulWidget {
+  final String name, rollno;
+  StudentTile({this.name, this.rollno});
 
   @override
+  _StudentTileState createState() => _StudentTileState();
+}
+
+class _StudentTileState extends State<StudentTile> {
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print(name);
-      },
-      child: Container(
-        // child: Stack(),
-        child: Text(name),
-      ),
+    return
+    //   GestureDetector(
+    //   onTap: () {
+    //     print(name);
+    //   },
+    //   child: Container(
+    //     // child: Stack(),
+    //     child: Text(rollno),
+    //   ),
+    // );
+    ToggleButtons(
+        children: [
+          Text(widget.rollno),
+        ],
+        isSelected: [
+          false
+        ],
+        onPressed: (index) {
+          print(widget.name);
+        },
     );
   }
 }
