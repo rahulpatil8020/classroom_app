@@ -7,6 +7,7 @@ import 'package:classroom/widgets/widgets.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Attendance extends StatefulWidget {
   TeacherDetails td;
@@ -16,9 +17,19 @@ class Attendance extends StatefulWidget {
 }
 
 class _AttendanceState extends State<Attendance> {
-  DateTime _dateTime;
+  DateTime _currentDate;
+
+
+
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _currentDate = DateTime.now();
+  }
+
   Widget build(BuildContext context) {
+    String _fd = DateFormat.yMMMd().format(_currentDate);
     return Scaffold(
       appBar: AppBar(
         title: Text("Attendance"),
@@ -29,23 +40,10 @@ class _AttendanceState extends State<Attendance> {
         child: Column(
           children: [
             ListTile(
-              title: GestureDetector(
-                onTap: (){
-                  showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now()
-                  ).then((value)  {
-                    setState(() {
-                      _dateTime = value;
-                    });
-                  });
-                },
-                  child: Text(_dateTime == null ? "Select todays date" : _dateTime.toLocal().toString())
-              ),
+              leading: Icon(Icons.calendar_today),
+              title: Text(_fd),
               trailing: Icon(Icons.keyboard_arrow_down),
-              onTap: null,
+              onTap: _pickDate,
             ),
             Container(
               width: double.infinity,
@@ -83,9 +81,25 @@ class _AttendanceState extends State<Attendance> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           print("DOne");
+          print(_fd);
+          print(_fd.runtimeType);
         },
       ),
-    );;
+    );
+  }
+  _pickDate() async {
+    DateTime date = await showDatePicker(
+        context: context,
+        initialDate: _currentDate,
+        firstDate: DateTime(DateTime.now().year - 50),
+        lastDate: DateTime.now());
+
+    if (date != null) {
+      setState(() {
+        _currentDate = date;
+        print(_currentDate);
+      });
+    }
   }
 }
 
