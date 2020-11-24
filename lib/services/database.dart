@@ -251,9 +251,6 @@ class DatabaseService {
   }
 
 
-
-
-
   Future<void> addStudentsAttandanceDetails({
     @required String branch,
     @required String semester,
@@ -264,12 +261,13 @@ class DatabaseService {
     @required String subject,
     @required Map studentData}) async {
     await FirebaseFirestore.instance
-        .collection("Attendance")
+        .collection("Branch")
         .doc(branch)
         .collection(semester)
         .doc(div)
-        .collection(subject)
+        .collection("Student")
         .doc(studentId)
+        .collection("Attendance").doc(subject)
         .collection(date)
         .doc(field)
         .set(studentData)
@@ -277,6 +275,31 @@ class DatabaseService {
       print(e.toString());
     });
   }
+
+
+  // Future<void> addStudentsAttandanceDetails({
+  //   @required String branch,
+  //   @required String semester,
+  //   @required String div,
+  //   @required String studentId,
+  //   @required String field,
+  //   @required String date,
+  //   @required String subject,
+  //   @required Map studentData}) async {
+  //   await FirebaseFirestore.instance
+  //       .collection("Attendance")
+  //       .doc(branch)
+  //       .collection(semester)
+  //       .doc(div)
+  //       .collection(subject)
+  //       .doc(studentId)
+  //       .collection(date)
+  //       .doc(field)
+  //       .set(studentData)
+  //       .catchError((e) {
+  //     print(e.toString());
+  //   });
+  // }
 
 }
 
