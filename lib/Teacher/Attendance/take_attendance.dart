@@ -17,9 +17,6 @@ class Attendance extends StatefulWidget {
 }
 
 class _AttendanceState extends State<Attendance> {
-  DateTime _currentDate;
-
-
 
   @override
   void initState() {
@@ -117,8 +114,7 @@ class StudentTile extends StatefulWidget {
 
 class _StudentTileState extends State<StudentTile> {
   List<bool> isSelected;
-  String status;
-  bool _attendance = false;
+
 
   @override
   void initState() {

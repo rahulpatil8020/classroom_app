@@ -19,6 +19,7 @@ class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
 }
+int _tA, _myA;
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
@@ -85,7 +86,7 @@ class _SignUpState extends State<SignUp> {
   void initState() {
     // TODO: implement initState
     widget.si.pickeddate = DateTime.now();
-    
+
     super.initState();
   }
 
