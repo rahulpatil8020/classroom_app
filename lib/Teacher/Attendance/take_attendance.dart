@@ -1,4 +1,5 @@
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/attendanceData.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/views/quiz/playquiz.dart';
@@ -11,12 +12,14 @@ import 'package:intl/intl.dart';
 
 class Attendance extends StatefulWidget {
   TeacherDetails td;
-  Attendance(this.td);
+  AttendanceModel am;
+  Attendance(this.td, [this.am]);
   @override
   _AttendanceState createState() => _AttendanceState();
 }
 
 class _AttendanceState extends State<Attendance> {
+  DateTime _currentDate;
 
   @override
   void initState() {
@@ -114,6 +117,8 @@ class StudentTile extends StatefulWidget {
 
 class _StudentTileState extends State<StudentTile> {
   List<bool> isSelected;
+  bool _attendance = false;
+  String status;
 
 
   @override
@@ -182,7 +187,7 @@ class _StudentTileState extends State<StudentTile> {
                 "RollNumber" : widget.rollno,
                 "Data" : widget.date,
                 "Status" : status,
-                ""
+                // ""
               };
               setState(() {
                 for(int i = 0; i<isSelected.length; i++){
