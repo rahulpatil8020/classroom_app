@@ -115,7 +115,20 @@ class StudentTile extends StatefulWidget {
 }
 
 class _StudentTileState extends State<StudentTile> {
-  bool _attendance = true;
+  List<bool> isSelected;
+  bool _attendance = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    isSelected = [
+      false,
+      false
+    ];
+    super.initState();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return
@@ -127,17 +140,6 @@ class _StudentTileState extends State<StudentTile> {
     //     // child: Stack(),
     //     child: Text(rollno),
     //   ),
-    // );
-    // ToggleButtons(
-    //     children: [
-    //       Text(widget.rollno),
-    //     ],
-    //     isSelected: [
-    //       false
-    //     ],
-    //     onPressed: (index) {
-    //       print(widget.name);
-    //     },
     // );
     Padding(
       padding: const EdgeInsets.all(2.0),
@@ -165,12 +167,35 @@ class _StudentTileState extends State<StudentTile> {
               child: Text("${widget.fname} ${widget.lname}", style: TextStyle(fontSize: 20),)
           ),
           subtitle: Text("Roll Number : ${widget.rollno}",style: TextStyle(fontSize: 15),),
-          onTap: (){
-            setState(() {
-              _attendance = !_attendance;
-              print(widget.uid);
-            });
-          },
+          trailing: ToggleButtons(
+            children: [
+              Text("P"),
+              Text("A")
+            ],
+            isSelected: isSelected,
+            color: Colors.white,
+            onPressed: (index){
+              setState(() {
+                for(int i = 0; i<isSelected.length; i++){
+                  if(i == index){
+                    isSelected[i] = true;
+                    if(i == 1){
+                      _attendance = false;
+                    }else _attendance = true;
+
+                  }else{
+                    isSelected[i] = false;
+                  }
+                }
+              });
+            },
+          ),
+          // onTap: (){
+          //   setState(() {
+          //     _attendance = !_attendance;
+          //     print(widget.uid);
+          //   });
+          // },
         ),
       ),
     );
