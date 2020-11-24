@@ -69,7 +69,8 @@ class _AttendanceState extends State<Attendance> {
                             rollno: course['RollNo'],
                             fname: course["FirstName"],
                             lname: course["LastName"],
-                            uid: course["UserID"]
+                            uid: course["UserID"],
+                            date: _fd,
                         );
                       });
                 },
@@ -107,8 +108,8 @@ class _AttendanceState extends State<Attendance> {
 
 
 class StudentTile extends StatefulWidget {
-  final String fname, rollno,lname, uid;
-  StudentTile({this.fname, this.rollno, this.lname,this.uid});
+  final String fname, rollno,lname, uid, date;
+  StudentTile({this.fname, this.rollno, this.lname,this.uid, this.date});
 
   @override
   _StudentTileState createState() => _StudentTileState();
@@ -116,6 +117,7 @@ class StudentTile extends StatefulWidget {
 
 class _StudentTileState extends State<StudentTile> {
   List<bool> isSelected;
+  String status;
   bool _attendance = false;
 
   @override
@@ -169,12 +171,23 @@ class _StudentTileState extends State<StudentTile> {
           subtitle: Text("Roll Number : ${widget.rollno}",style: TextStyle(fontSize: 15),),
           trailing: ToggleButtons(
             children: [
-              Text("P"),
-              Text("A")
+              Text("P",style: _attendance ? TextStyle(fontSize: 15,fontWeight: FontWeight.bold): TextStyle(fontSize: 15),),
+              Text("A",style: _attendance ? TextStyle(fontSize: 15) : TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
             ],
             isSelected: isSelected,
             color: Colors.white,
+            selectedColor: Colors.black,
+            fillColor: _attendance ? Colors.green : Colors.red.shade400,
             onPressed: (index){
+              if(_attendance == true){
+                status = "Present";
+              }else status = "Absent";
+              Map<String,dynamic> attendaceDetails = {
+                "RollNumber" : widget.rollno,
+                "Data" : widget.date,
+                "Status" : status,
+
+              };
               setState(() {
                 for(int i = 0; i<isSelected.length; i++){
                   if(i == index){
@@ -190,12 +203,6 @@ class _StudentTileState extends State<StudentTile> {
               });
             },
           ),
-          // onTap: (){
-          //   setState(() {
-          //     _attendance = !_attendance;
-          //     print(widget.uid);
-          //   });
-          // },
         ),
       ),
     );
