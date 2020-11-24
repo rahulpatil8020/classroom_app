@@ -9,43 +9,75 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Attendance extends StatefulWidget {
-  final TeacherDetails td;
+  TeacherDetails td;
   Attendance(this.td);
   @override
   _AttendanceState createState() => _AttendanceState();
 }
 
 class _AttendanceState extends State<Attendance> {
-  Stream quizStream;
-  DatabaseService databaseService = new DatabaseService();
-
-  Widget quizList() {
+  DateTime _dateTime;
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Attendance"),
+        backgroundColor: Colors.black,
+      ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("Branch")
-              .doc(widget.td.branch)
-              .collection(widget.td.sem)
-              .doc(widget.td.div)
-              .collection("Student").orderBy("RollNo").snapshots(),
-          builder: (context, snapshot) {
-            return snapshot.data == null
-                ? Container(
-              child: CircularProgressIndicator(),
-            )
-                : ListView.builder(
-                    itemCount: snapshot.data.documents.length,
-                    itemBuilder: (context, index) {
-                      DocumentSnapshot course = snapshot.data.documents[index];
-                      return StudentTile(
-                          rollno: course['RollNo'],
-                        fname: course["FirstName"],
-                        lname: course["LastName"],
-                          );
+        child: Column(
+          children: [
+            ListTile(
+              title: GestureDetector(
+                onTap: (){
+                  showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now()
+                  ).then((value)  {
+                    setState(() {
+                      _dateTime = value;
                     });
-          },
+                  });
+                },
+                  child: Text(_dateTime == null ? "Select todays date" : _dateTime.toLocal().toString())
+              ),
+              trailing: Icon(Icons.keyboard_arrow_down),
+              onTap: null,
+            ),
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height *7/10,
+              // height: double.infinity,
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("Branch")
+                    .doc(widget.td.branch)
+                    .collection(widget.td.sem)
+                    .doc(widget.td.div)
+                    .collection("Student").orderBy("RollNo").snapshots(),
+                builder: (context, snapshot) {
+                  return snapshot.data == null
+                      ? Container(
+                    child: CircularProgressIndicator(),
+                  )
+                      : ListView.builder(
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot course = snapshot.data.documents[index];
+                        return StudentTile(
+                            rollno: course['RollNo'],
+                            fname: course["FirstName"],
+                            lname: course["LastName"],
+                            uid: course["UserID"]
+                        );
+                      });
+                },
+              ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -53,41 +85,16 @@ class _AttendanceState extends State<Attendance> {
           print("DOne");
         },
       ),
-    );
-  }
-
-  // @override
-  // void initState() {
-  //   databaseService.getQuizData().then((val) {
-  //     setState(() {
-  //       quizStream = val;
-  //     });
-  //   });
-  //   super.initState();
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(context),
-      body: Container(
-          color: kSecondaryColor.withOpacity(0.01), child: quizList()),
-      //floatingActionButton: FloatingActionButton(
-      // backgroundColor: kPrimaryColor,
-      // child: Icon(Icons.add),
-      // onPressed: () {
-      //  Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => CreateQuiz()));
-      // },
-    );
+    );;
   }
 }
 
 
 
+
 class StudentTile extends StatefulWidget {
-  final String fname, rollno,lname;
-  StudentTile({this.fname, this.rollno, this.lname});
+  final String fname, rollno,lname, uid;
+  StudentTile({this.fname, this.rollno, this.lname,this.uid});
 
   @override
   _StudentTileState createState() => _StudentTileState();
@@ -147,6 +154,7 @@ class _StudentTileState extends State<StudentTile> {
           onTap: (){
             setState(() {
               _attendance = !_attendance;
+              print(widget.uid);
             });
           },
         ),

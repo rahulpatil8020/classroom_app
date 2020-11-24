@@ -6,11 +6,7 @@ AppBar appBar(BuildContext context) {
   AuthService authService = new AuthService();
   return AppBar(
     elevation: 0,
-    backgroundColor: Colors.white,
-    leading: IconButton(
-      icon: Icon(Icons.dashboard, color: kPrimaryColor),
-      onPressed: () {},
-    ),
+    backgroundColor: Colors.black,
     title: RichText(
         text: TextSpan(
             style: Theme.of(context)

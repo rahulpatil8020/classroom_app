@@ -258,18 +258,19 @@ class DatabaseService {
     @required String branch,
     @required String semester,
     @required String div,
-    @required String id,
-    @required String pressed,
+    @required String studentId,
     @required String field,
+    @required String date,
+    @required String subject,
     @required Map studentData}) async {
     await FirebaseFirestore.instance
-        .collection("Branch")
+        .collection("Attendance")
         .doc(branch)
         .collection(semester)
         .doc(div)
-        .collection("Student")
-        .doc(id)
-        .collection(pressed)
+        .collection(subject)
+        .doc(studentId)
+        .collection(date)
         .doc(field)
         .set(studentData)
         .catchError((e) {
