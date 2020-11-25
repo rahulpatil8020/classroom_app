@@ -273,7 +273,7 @@ class RouteDecide extends StatelessWidget {
           .collection("User")
           .doc(email)
           .snapshots(),
-      builder: (context,snapshot){  
+      builder: (context,snapshot){
         role = snapshot.data["role"];
         if(role == "Student"){
           si.uid = id;
