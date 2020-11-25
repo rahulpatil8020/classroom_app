@@ -151,7 +151,7 @@ class _StudentTileState extends State<StudentTile> {
       semester: widget.sem,
       div: widget.div,
       date: widget.date,
-      status: status,
+      status: delete,
       studentId: widget.uid,
       subject: widget.sub,
     );
@@ -234,6 +234,7 @@ class _StudentTileState extends State<StudentTile> {
                       } else {
                         print("*-------State Changed to absent--------*");
                         status = "Absent";
+                        delete = "Present";
                         checka = status;
                         _attendance = false;
 
@@ -260,6 +261,7 @@ class _StudentTileState extends State<StudentTile> {
                       } else {
                         _attendance = true;
                         status = "Present";
+                        delete =  "Absent";
                         print("*-------State Changed to present--------*");
                         print(status);
                         print(widget.date);
@@ -276,7 +278,6 @@ class _StudentTileState extends State<StudentTile> {
                   }
                 }
               });
-              uploadAttendanceData();
             },
           ),
         ),
