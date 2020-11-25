@@ -12,20 +12,20 @@ import 'package:intl/intl.dart';
 
 class Attendance extends StatefulWidget {
   TeacherDetails td;
-  AttendanceModel am;
-  Attendance(this.td, [this.am]);
+  Attendance(this.td);
   @override
   _AttendanceState createState() => _AttendanceState();
 }
 
 class _AttendanceState extends State<Attendance> {
-  DateTime _currentDate;
+  DateTime _currentDate, _previousDay;
 
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     _currentDate = DateTime.now();
+    _previousDay = DateTime.now().subtract(Duration(days: 1));
+    super.initState();
   }
 
   Widget build(BuildContext context) {
@@ -71,6 +71,10 @@ class _AttendanceState extends State<Attendance> {
                             lname: course["LastName"],
                             uid: course["UserID"],
                             date: _fd,
+                          branch: widget.td.branch,
+                          div: widget.td.div,
+                          sem: widget.td.sem,
+                          sub: widget.td.subject,
                         );
                       });
                 },
@@ -92,6 +96,7 @@ class _AttendanceState extends State<Attendance> {
     DateTime date = await showDatePicker(
         context: context,
         initialDate: _currentDate,
+        // initialDate: DateTime(DateTime.now().day - 1),
         firstDate: DateTime(DateTime.now().year - 50),
         lastDate: DateTime.now());
 
@@ -108,17 +113,49 @@ class _AttendanceState extends State<Attendance> {
 
 
 class StudentTile extends StatefulWidget {
-  final String fname, rollno,lname, uid, date;
-  StudentTile({this.fname, this.rollno, this.lname,this.uid, this.date});
+  final String fname, rollno,lname, uid, date, sub, branch, div, sem;
+  StudentTile({this.fname, this.rollno, this.lname,this.uid, this.date, this.sem,this.branch,this.div,this.sub});
 
   @override
   _StudentTileState createState() => _StudentTileState();
 }
 
 class _StudentTileState extends State<StudentTile> {
+  TeacherDetails td;
   List<bool> isSelected;
   bool _attendance = false;
-  String status;
+  String status, checka, delete;
+  DatabaseService databaseService = new DatabaseService();
+
+  uploadAttendanceData() async {
+    Map<String,dynamic> attendaceDetails = {
+      "RollNumber" : widget.rollno,
+      "Data" : widget.date,
+      "Status" : status,
+      "Name" : "${widget.fname} ${widget.lname}",
+    };
+
+    databaseService.addStudentsAttandanceDetailsSubject(
+      branch: widget.branch,
+      semester: widget.sem,
+      div: widget.div,
+      date: widget.date,
+      status: status,
+      studentId: widget.uid,
+      subject: widget.sub,
+      studentData: attendaceDetails,
+    );
+  }
+  deleteAttendanceData() async {
+    databaseService.deleteStudentsAttandanceDetailsSubject(branch: widget.branch,
+      semester: widget.sem,
+      div: widget.div,
+      date: widget.date,
+      status: status,
+      studentId: widget.uid,
+      subject: widget.sub,
+    );
+  }
 
 
   @override
@@ -180,28 +217,66 @@ class _StudentTileState extends State<StudentTile> {
             selectedColor: Colors.black,
             fillColor: _attendance ? Colors.green : Colors.red.shade400,
             onPressed: (index){
-              if(_attendance == true){
-                status = "Present";
-              }else status = "Absent";
-              Map<String,dynamic> attendaceDetails = {
-                "RollNumber" : widget.rollno,
-                "Data" : widget.date,
-                "Status" : status,
-                // ""
-              };
               setState(() {
                 for(int i = 0; i<isSelected.length; i++){
                   if(i == index){
                     isSelected[i] = true;
                     if(i == 1){
-                      _attendance = false;
-                    }else _attendance = true;
+                      if(checka == null){
+                        status = "Absent";
+                        checka = status;
+                        _attendance = false;
+                        print(status);
+                        print(widget.date);
+                        print(widget.uid);
+                        print(widget.rollno);
+                        uploadAttendanceData();
+                      } else {
+                        print("*-------State Changed to absent--------*");
+                        status = "Absent";
+                        checka = status;
+                        _attendance = false;
+
+                        print(status);
+                        print(widget.sub);
+                        print(widget.date);
+                        print(widget.uid);
+                        print(widget.rollno);
+                        deleteAttendanceData();
+                        uploadAttendanceData();
+                      }
+                    }else {
+                      if(checka == null) {
+                        _attendance = true;
+                        status = "Present";
+                        checka = status;
+                        print("*------------------------*");
+                        print(status);
+                        print(widget.date);
+                        print(widget.uid);
+                        print(widget.rollno);
+                        uploadAttendanceData();
+                        print("***********************************");
+                      } else {
+                        _attendance = true;
+                        status = "Present";
+                        print("*-------State Changed to present--------*");
+                        print(status);
+                        print(widget.date);
+                        print(widget.uid);
+                        print(widget.rollno);
+                        print("****************");
+                        deleteAttendanceData();
+                        uploadAttendanceData();
+                      }
+                    }
 
                   }else{
                     isSelected[i] = false;
                   }
                 }
               });
+              uploadAttendanceData();
             },
           ),
         ),

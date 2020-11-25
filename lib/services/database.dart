@@ -251,13 +251,63 @@ class DatabaseService {
   }
 
 
-  Future<void> addStudentsAttandanceDetails({
+  Future<void> addStudentsAttandanceDetailsSubject({
     @required String branch,
     @required String semester,
     @required String div,
     @required String studentId,
-    @required String field,
     @required String date,
+    @required String subject,
+    @required String status,
+    @required Map studentData}) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semester)
+        .doc(div)
+        .collection("Student")
+        .doc(studentId)
+        .collection("Attendance").doc(subject)
+        .collection(status)
+        .doc(date)
+        .set(studentData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+
+
+  Future<void> deleteStudentsAttandanceDetailsSubject({
+    @required String branch,
+    @required String semester,
+    @required String div,
+    @required String studentId,
+    @required String date,
+    @required String subject,
+    @required String status,
+    @required Map studentData}) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semester)
+        .doc(div)
+        .collection("Student")
+        .doc(studentId)
+        .collection("Attendance").doc(subject)
+        .collection(status)
+        .doc(date)
+        .delete()
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> addStudentsAttandanceDetailsSubjectTotal({
+    @required String branch,
+    @required String semester,
+    @required String div,
+    @required String studentId,
     @required String subject,
     @required Map studentData}) async {
     await FirebaseFirestore.instance
@@ -268,8 +318,6 @@ class DatabaseService {
         .collection("Student")
         .doc(studentId)
         .collection("Attendance").doc(subject)
-        .collection(date)
-        .doc(field)
         .set(studentData)
         .catchError((e) {
       print(e.toString());
