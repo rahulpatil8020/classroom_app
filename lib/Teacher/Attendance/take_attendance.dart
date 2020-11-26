@@ -1,3 +1,4 @@
+import 'package:classroom/Teacher/Attendance/display_attendance_list.dart';
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/models/attendanceData.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
@@ -79,6 +80,7 @@ class _AttendanceState extends State<Attendance> {
                           div: widget.td.div,
                           sem: widget.td.sem,
                           sub: widget.td.subject,
+                          exacttym: _currentDate.toString(),
                         );
                       });
                 },
@@ -91,6 +93,9 @@ class _AttendanceState extends State<Attendance> {
         child: Icon(Icons.done),
         onPressed: () async{
           final action = await Dialogs.yesAbortDialog(context, "WARNING", "Do you want to save and proceed further?");
+          if(action == DialogAction.yes){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AttendanceDisplay()));
+          }
           print("DOne");
           print(_fd);
           print(_fd.runtimeType);
@@ -120,8 +125,8 @@ class _AttendanceState extends State<Attendance> {
 
 
 class StudentTile extends StatefulWidget {
-  final String fname, rollno,lname, uid, date, sub, branch, div, sem;
-  StudentTile({this.fname, this.rollno, this.lname,this.uid, this.date, this.sem,this.branch,this.div,this.sub});
+  final String fname, rollno,lname, uid, date, sub, branch, div, sem, exacttym;
+  StudentTile({this.fname, this.rollno, this.lname,this.uid, this.date, this.sem,this.branch,this.div,this.sub,this.exacttym});
 
   @override
   _StudentTileState createState() => _StudentTileState();
@@ -140,6 +145,7 @@ class _StudentTileState extends State<StudentTile> {
       "Data" : widget.date,
       "Status" : status,
       "Name" : "${widget.fname} ${widget.lname}",
+      "Time" : widget.exacttym
     };
 
     databaseService.addStudentsAttandanceDetailsSubject(

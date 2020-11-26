@@ -27,7 +27,7 @@ class Dialogs{
                 onPressed: (){
                   Navigator.of(context).pop(DialogAction.yes);
                 },
-                child: Text("Confirm")
+                child: Text("Confirm", style: TextStyle(color: Colors.white),)
             )
           ],
         );
