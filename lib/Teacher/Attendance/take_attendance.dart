@@ -4,6 +4,7 @@ import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/views/quiz/playquiz.dart';
 import 'package:classroom/widgets/appBar.dart';
+import 'package:classroom/widgets/dialogs.dart';
 import 'package:classroom/widgets/widgets.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +20,8 @@ class Attendance extends StatefulWidget {
 
 class _AttendanceState extends State<Attendance> {
   DateTime _currentDate, _previousDay;
+  bool tapped = false;
+  int lengthofDoc;
 
   @override
   void initState() {
@@ -65,6 +68,7 @@ class _AttendanceState extends State<Attendance> {
                       itemCount: snapshot.data.documents.length,
                       itemBuilder: (context, index) {
                         DocumentSnapshot course = snapshot.data.documents[index];
+                        lengthofDoc = snapshot.data.documents.length;
                         return StudentTile(
                             rollno: course['RollNo'],
                             fname: course["FirstName"],
@@ -84,10 +88,13 @@ class _AttendanceState extends State<Attendance> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
+        child: Icon(Icons.done),
+        onPressed: () async{
+          final action = await Dialogs.yesAbortDialog(context, "WARNING", "Do you want to save and proceed further?");
           print("DOne");
           print(_fd);
           print(_fd.runtimeType);
+          print(lengthofDoc);
         },
       ),
     );
@@ -106,15 +113,6 @@ class _AttendanceState extends State<Attendance> {
         print(_currentDate);
       });
     }
-  }
-
-  void _showAlertDialog(String title, String message) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(title),
-      content: Text(message),
-      con
-    );
-    showDialog(context: context, builder: (_) => alertDialog);
   }
 }
 
