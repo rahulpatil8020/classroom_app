@@ -107,6 +107,15 @@ class _AttendanceState extends State<Attendance> {
       });
     }
   }
+
+  void _showAlertDialog(String title, String message) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      con
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
 }
 
 

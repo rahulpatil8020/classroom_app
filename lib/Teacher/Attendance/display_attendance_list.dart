@@ -10,4 +10,11 @@ class _AttendanceDisplayState extends State<AttendanceDisplay> {
   Widget build(BuildContext context) {
     return Container();
   }
+  void _showAlertDialog(String title, String message) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
+  }
 }
