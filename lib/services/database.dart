@@ -267,7 +267,7 @@ class DatabaseService {
         .doc(div)
         .collection("Student")
         .doc(studentId)
-        .collection("Attendance").doc(subject)
+        .collection(subject).doc("Attendance")
         .collection(status)
         .doc(date)
         .set(studentData)
