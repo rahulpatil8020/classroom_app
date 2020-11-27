@@ -75,11 +75,11 @@ class _AttendanceState extends State<Attendance> {
                         DocumentSnapshot course = snapshot.data.documents[index];
                         lengthofDoc = snapshot.data.documents.length;
                         return StudentTile(
-                            rollno: course['RollNo'],
-                            fname: course["FirstName"],
-                            lname: course["LastName"],
-                            uid: course["UserID"],
-                            date: _fd,
+                          rollno: course['RollNo'],
+                          fname: course["FirstName"],
+                          lname: course["LastName"],
+                          uid: course["UserID"],
+                          date: _fd,
                           datasend : sendData,
                           branch: widget.td.branch,
                           div: widget.td.div,
@@ -103,7 +103,7 @@ class _AttendanceState extends State<Attendance> {
               sendData = true;
             });
             // widget.ic.isCompleted = true;
-            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AttendanceDisplay()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AttendanceDisplay()));
             print("Data sent succesfully");
           }
           print("DOne");
@@ -196,128 +196,116 @@ class _StudentTileState extends State<StudentTile> {
   @override
   Widget build(BuildContext context) {
     return
-    //   GestureDetector(
-    //   onTap: () {
-    //     print(name);
-    //   },
-    //   child: Container(
-    //     // child: Stack(),
-    //     child: Text(rollno),
-    //   ),
-    // );
-    Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            colors: _attendance ?[Color.fromRGBO(2, 170, 176, 0.5),Color.fromRGBO(0, 205, 172,0.5)]: [Color.fromRGBO(221, 94, 137, 0.7),Color.fromRGBO(247, 187, 151,0.7)],
-          )
-        ),
-        child: ListTile(
-          leading: CircleAvatar(
-            // backgroundImage: NetworkImage(),
-            backgroundColor:_attendance ? Colors.green : Colors.red.shade400,
-            child: Text(widget.rollno,
-              style: TextStyle(
-                color: _attendance ? Colors.black : Colors.white,
-                fontSize: 18,
-              ),
+      //   GestureDetector(
+      //   onTap: () {
+      //     print(name);
+      //   },
+      //   child: Container(
+      //     // child: Stack(),
+      //     child: Text(rollno),
+      //   ),
+      // );
+      Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              gradient: LinearGradient(
+                colors: _attendance ?[Color.fromRGBO(2, 170, 176, 0.5),Color.fromRGBO(0, 205, 172,0.5)]: [Color.fromRGBO(221, 94, 137, 0.7),Color.fromRGBO(247, 187, 151,0.7)],
+              )
+          ),
+          child: ListTile(
+            leading: CircleAvatar(
+              // backgroundImage: NetworkImage(),
+              backgroundColor:_attendance ? Colors.green : Colors.red.shade400,
+              child: Text(widget.rollno,
+                style: TextStyle(
+                  color: _attendance ? Colors.black : Colors.white,
+                  fontSize: 18,
+                ),
 
+              ),
+            ),
+            title: Container(
+
+                child: Text("${widget.fname} ${widget.lname}", style: TextStyle(fontSize: 20),)
+            ),
+            subtitle: Text("Roll Number : ${widget.rollno}",style: TextStyle(fontSize: 15),),
+            trailing: ToggleButtons(
+              children: [
+                Text("P",style: _attendance ? TextStyle(fontSize: 15,fontWeight: FontWeight.bold): TextStyle(fontSize: 15),),
+                Text("A",style: _attendance ? TextStyle(fontSize: 15) : TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
+              ],
+              isSelected: isSelected,
+              color: Colors.white,
+              selectedColor: Colors.black,
+              fillColor: _attendance ? Colors.green : Colors.red.shade400,
+              onPressed: (index){
+                setState(() {
+                  for(int i = 0; i<isSelected.length; i++){
+                    if(i == index){
+                      isSelected[i] = true;
+                      if(i == 1){
+                        if(checka == null){
+                          status = "Absent";
+                          checka = status;
+                          _attendance = false;
+                          print(status);
+                          print(widget.date);
+                          print(widget.uid);
+                          print(widget.rollno);
+                          uploadAttendanceData();
+                        } else {
+                          print("*-------State Changed to absent--------*");
+                          status = "Absent";
+                          delete = "Present";
+                          checka = status;
+                          _attendance = false;
+
+                          print(status);
+                          print(widget.sub);
+                          print(widget.date);
+                          print(widget.uid);
+                          print(widget.rollno);
+                          uploadAttendanceData();
+                          deleteAttendanceData();
+                        }
+                      }else {
+                        if(checka == null) {
+                          _attendance = true;
+                          status = "Present";
+                          checka = status;
+                          print("*------------------------*");
+                          print(status);
+                          print(widget.date);
+                          print(widget.uid);
+                          print(widget.rollno);
+                          uploadAttendanceData();
+                          print("***********************************");
+                        } else {
+                          _attendance = true;
+                          status = "Present";
+                          delete =  "Absent";
+                          print("*-------State Changed to present--------*");
+                          print(status);
+                          print(widget.date);
+                          print(widget.uid);
+                          print(widget.rollno);
+                          print("****************");
+                          uploadAttendanceData();
+                          deleteAttendanceData();
+                        }
+                      }
+
+                    }else{
+                      isSelected[i] = false;
+                    }
+                  }
+                });
+              },
             ),
           ),
-          title: Container(
-
-              child: Text("${widget.fname} ${widget.lname}", style: TextStyle(fontSize: 20),)
-          ),
-          subtitle: Text("Roll Number : ${widget.rollno}",style: TextStyle(fontSize: 15),),
-          trailing: ToggleButtons(
-            children: [
-              Text("P",style: _attendance ? TextStyle(fontSize: 15,fontWeight: FontWeight.bold): TextStyle(fontSize: 15),),
-              Text("A",style: _attendance ? TextStyle(fontSize: 15) : TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
-            ],
-            isSelected: isSelected,
-            color: Colors.white,
-            selectedColor: Colors.black,
-            fillColor: _attendance ? Colors.green : Colors.red.shade400,
-            onPressed: (index){
-              setState(() {
-                for(int i = 0; i<isSelected.length; i++){
-                  if(i == index){
-                    isSelected[i] = true;
-                    if(i == 1){
-                      if(checka == null){
-                        status = "Absent";
-                        checka = status;
-                        _attendance = false;
-                        print(status);
-                        print(widget.date);
-                        print(widget.uid);
-                        print(widget.rollno);
-                        if(widget.datasend == true){
-                          uploadAttendanceData();
-                        }
-                      } else {
-                        print("*-------State Changed to absent--------*");
-                        status = "Absent";
-                        delete = "Present";
-                        checka = status;
-                        _attendance = false;
-
-                        print(status);
-                        print(widget.sub);
-                        print(widget.date);
-                        print(widget.uid);
-                        print(widget.rollno);
-                        if(widget.datasend == true){
-                          uploadAttendanceData();
-                          deleteAttendanceData();
-                        }
-                        //
-                        // uploadAttendanceData();
-                      }
-                    }else {
-                      if(checka == null) {
-                        _attendance = true;
-                        status = "Present";
-                        checka = status;
-                        print("*------------------------*");
-                        print(status);
-                        print(widget.date);
-                        print(widget.uid);
-                        print(widget.rollno);
-                        if(widget.datasend == true){
-                          uploadAttendanceData();
-                        }
-                        print("***********************************");
-                      } else {
-                        _attendance = true;
-                        status = "Present";
-                        delete =  "Absent";
-                        print("*-------State Changed to present--------*");
-                        print(status);
-                        print(widget.date);
-                        print(widget.uid);
-                        print(widget.rollno);
-                        print("****************");
-                        if(widget.datasend == true){
-                          uploadAttendanceData();
-                          deleteAttendanceData();
-                        }
-                        //
-                        // uploadAttendanceData();
-                      }
-                    }
-
-                  }else{
-                    isSelected[i] = false;
-                  }
-                }
-              });
-            },
-          ),
         ),
-      ),
-    );
+      );
   }
 }

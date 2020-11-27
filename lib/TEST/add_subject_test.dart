@@ -47,8 +47,8 @@ class _AddSubjectTestState extends State<AddSubjectTest> {
 
       databaseService.addTeacherDataMain(teacherInfo, widget.td.email,
           widget.td.branch, widget.td.sem, widget.td.div,widget.td.uid);
-      databaseService.addSubjectDataMain(subjectMap, widget.td.email,
-          widget.td.branch, widget.td.sem, widget.td.div);
+      // databaseService.addSubjectDataMain(subjectMap, widget.td.email,
+      //     widget.td.branch, widget.td.sem, widget.td.div);
       databaseService.addSubjectData(subjectMap, widget.td.email).then((value) {
         setState(() {
           _isLoading = false;
