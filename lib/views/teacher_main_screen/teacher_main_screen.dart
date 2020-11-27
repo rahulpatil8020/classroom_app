@@ -2,6 +2,7 @@ import 'package:classroom/TEST/create_teacher_info.dart';
 import 'package:classroom/TEST/display_subject_test.dart';
 import 'package:classroom/Teacher/Attendance/take_attendance.dart';
 import 'package:classroom/Teacher/subject_list.dart';
+import 'package:classroom/models/statechecker.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/views/teacher_main_screen/create_assignment.dart';
 import 'package:classroom/views/teacher_main_screen/create_notification.dart';
@@ -15,7 +16,8 @@ import 'package:flutter/material.dart';
 
 class TeacherMainScreen extends StatefulWidget {
   final TeacherDetails td;
-  TeacherMainScreen(this.td);
+  IsCompleted ic;
+  TeacherMainScreen(this.td,[this.ic]);
 
   @override
   _TeacherMainScreenState createState() => _TeacherMainScreenState();
@@ -60,7 +62,7 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
                         context,
                         "Attendence",
                         SubjectList(
-                            widget.td, "Attendance", Attendance(widget.td)),
+                            widget.td, "Attendance", Attendance(widget.td,widget.ic), widget.ic),
                         150,
                         150,
                         25)

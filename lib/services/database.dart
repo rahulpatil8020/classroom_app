@@ -98,18 +98,18 @@ class DatabaseService {
     });
   }
 
-  Future<void> addSubjectDataMain(Map subjectData, String email, String branch, String semester, String div) async {
-    await FirebaseFirestore.instance
-        .collection(branch)
-        .doc(semester)
-        .collection(div)
-        .doc("Teacher")
-        .collection("Subject_Data")
-        .add(subjectData)
-        .catchError((e) {
-      print(e.toString());
-    });
-  }
+  // Future<void> addSubjectDataMain(Map subjectData, String email, String branch, String semester, String div) async {
+  //   await FirebaseFirestore.instance
+  //       .collection(branch)
+  //       .doc(semester)
+  //       .collection(div)
+  //       .doc("Teacher")
+  //       .collection("Subject_Data")
+  //       .add(subjectData)
+  //       .catchError((e) {
+  //     print(e.toString());
+  //   });
+  // }
 
 
   Future<void> addSubjectData(Map subjectData, String email) async {
@@ -123,30 +123,30 @@ class DatabaseService {
     });
   }
 
-  Future<void> updateSubjectDataMain(
-      {Map subjectData,
-      String id,
-      String branch,
-      String semester,
-      String div}) async {
-    await FirebaseFirestore.instance
-        .collection(branch)
-        .doc(semester)
-        .collection(div)
-        .doc("Teacher")
-        .collection("Subject_Data")
-        .doc(id)
-        .update(subjectData)
-        .catchError((e) {
-          print(branch);
-          print(id);
-          print(semester);
-          print(div);
-          print(subjectData);
-
-      print(e.toString());
-    });
-  }
+  // Future<void> updateSubjectDataMain(
+  //     {Map subjectData,
+  //     String id,
+  //     String branch,
+  //     String semester,
+  //     String div}) async {
+  //   await FirebaseFirestore.instance
+  //       .collection(branch)
+  //       .doc(semester)
+  //       .collection(div)
+  //       .doc("Teacher")
+  //       .collection("Subject_Data")
+  //       .doc(id)
+  //       .update(subjectData)
+  //       .catchError((e) {
+  //         print(branch);
+  //         print(id);
+  //         print(semester);
+  //         print(div);
+  //         print(subjectData);
+  //
+  //     print(e.toString());
+  //   });
+  // }
 
   Future<void> updateSubjectData(Map subjectData, String email, String id) async {
     await FirebaseFirestore.instance
@@ -160,18 +160,18 @@ class DatabaseService {
     });
   }
 
-  Future<void> deleteSubjectDataMain(String email, String id,String branch, String semester, String div) async {
-    await FirebaseFirestore.instance
-        .collection(branch)
-        .doc(semester)
-        .collection(div)
-        .doc("Teacher")
-        .collection("Subject_Data").doc(id)
-        .delete()
-        .catchError((e) {
-      print(e.toString());
-    });
-  }
+  // Future<void> deleteSubjectDataMain(String email, String id,String branch, String semester, String div) async {
+  //   await FirebaseFirestore.instance
+  //       .collection(branch)
+  //       .doc(semester)
+  //       .collection(div)
+  //       .doc("Teacher")
+  //       .collection("Subject_Data").doc(id)
+  //       .delete()
+  //       .catchError((e) {
+  //     print(e.toString());
+  //   });
+  // }
 
   Future<void> deleteSubjectData(String email, String id) async {
     await FirebaseFirestore.instance

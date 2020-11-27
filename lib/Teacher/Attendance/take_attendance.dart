@@ -1,6 +1,7 @@
 import 'package:classroom/Teacher/Attendance/display_attendance_list.dart';
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/models/attendanceData.dart';
+import 'package:classroom/models/statechecker.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/views/quiz/playquiz.dart';
@@ -14,7 +15,8 @@ import 'package:intl/intl.dart';
 
 class Attendance extends StatefulWidget {
   TeacherDetails td;
-  Attendance(this.td);
+  IsCompleted ic;
+  Attendance(this.td, this.ic);
   @override
   _AttendanceState createState() => _AttendanceState();
 }
@@ -29,11 +31,13 @@ class _AttendanceState extends State<Attendance> {
     // TODO: implement initState
     _currentDate = DateTime.now();
     _previousDay = DateTime.now().subtract(Duration(days: 1));
+
     super.initState();
   }
 
   Widget build(BuildContext context) {
     String _fd = DateFormat.yMMMd().format(_currentDate);
+    bool sendData = false;
     return Scaffold(
       appBar: AppBar(
         title: Text("Attendance"),
@@ -76,6 +80,7 @@ class _AttendanceState extends State<Attendance> {
                             lname: course["LastName"],
                             uid: course["UserID"],
                             date: _fd,
+                          datasend : sendData,
                           branch: widget.td.branch,
                           div: widget.td.div,
                           sem: widget.td.sem,
@@ -94,7 +99,12 @@ class _AttendanceState extends State<Attendance> {
         onPressed: () async{
           final action = await Dialogs.yesAbortDialog(context, "WARNING", "Do you want to save and proceed further?");
           if(action == DialogAction.yes){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AttendanceDisplay()));
+            setState(() {
+              sendData = true;
+            });
+            // widget.ic.isCompleted = true;
+            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AttendanceDisplay()));
+            print("Data sent succesfully");
           }
           print("DOne");
           print(_fd);
@@ -126,7 +136,8 @@ class _AttendanceState extends State<Attendance> {
 
 class StudentTile extends StatefulWidget {
   final String fname, rollno,lname, uid, date, sub, branch, div, sem, exacttym;
-  StudentTile({this.fname, this.rollno, this.lname,this.uid, this.date, this.sem,this.branch,this.div,this.sub,this.exacttym});
+  bool datasend;
+  StudentTile({this.fname, this.rollno, this.lname,this.uid, this.date, this.sem,this.branch,this.div,this.sub,this.exacttym, this.datasend});
 
   @override
   _StudentTileState createState() => _StudentTileState();
@@ -243,7 +254,9 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        uploadAttendanceData();
+                        if(widget.datasend == true){
+                          uploadAttendanceData();
+                        }
                       } else {
                         print("*-------State Changed to absent--------*");
                         status = "Absent";
@@ -256,8 +269,12 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        deleteAttendanceData();
-                        uploadAttendanceData();
+                        if(widget.datasend == true){
+                          uploadAttendanceData();
+                          deleteAttendanceData();
+                        }
+                        //
+                        // uploadAttendanceData();
                       }
                     }else {
                       if(checka == null) {
@@ -269,7 +286,9 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        uploadAttendanceData();
+                        if(widget.datasend == true){
+                          uploadAttendanceData();
+                        }
                         print("***********************************");
                       } else {
                         _attendance = true;
@@ -281,8 +300,12 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.uid);
                         print(widget.rollno);
                         print("****************");
-                        deleteAttendanceData();
-                        uploadAttendanceData();
+                        if(widget.datasend == true){
+                          uploadAttendanceData();
+                          deleteAttendanceData();
+                        }
+                        //
+                        // uploadAttendanceData();
                       }
                     }
 
