@@ -23,7 +23,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-  String email, password, id;
+  String email = "test@test.com", password = "123456", id;
   AuthService authService = new AuthService();
   DatabaseService databaseService = new DatabaseService();
   bool isEmail(String em) {
@@ -42,6 +42,7 @@ class _SignInState extends State<SignIn> {
       });
       try {
         await authService.signInEmailAndPass(email, password).then((value) {
+        // await authService.signInEmailAndPass("test@test.com", "123456").then((value) {
           id = value.uid;
           if (value != null) {
             setState(() {
@@ -103,6 +104,7 @@ class _SignInState extends State<SignIn> {
                           decoration: InputDecoration(
                             hintText: "Email",
                           ),
+                          initialValue: email,
                           onChanged: (val) {
                             email = val;
                           },
@@ -117,6 +119,7 @@ class _SignInState extends State<SignIn> {
                                 ? "Enter Password"
                                 : null;
                           },
+                          initialValue: password,
                           decoration: InputDecoration(
                             hintText: "Password",
                           ),

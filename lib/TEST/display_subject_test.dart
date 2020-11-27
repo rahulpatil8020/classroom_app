@@ -142,7 +142,7 @@ class _DisplaySubjectListState extends State<DisplaySubjectList> {
         stream: FirebaseFirestore.instance
             .collection("User")
             .doc(widget.td.email)
-            .collection("Subject_Data")
+            .collection("Subject_Data").orderBy("Semester",descending: true)
             .snapshots(),
         builder: (context, snapshot) {
           return ListView.builder(

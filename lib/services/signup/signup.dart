@@ -19,6 +19,7 @@ class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
 }
+int _tA, _myA;
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
@@ -66,7 +67,7 @@ class _SignUpState extends State<SignUp> {
       };
       databaseService.addUserData(userMap, widget.si.email);
       databaseService
-          .addFieldsData(
+          .addStudentsData(
               branch: widget.si.branch,
               div: widget.si.div,
               semester: widget.si.sem,
@@ -80,11 +81,13 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     widget.si.pickeddate = DateTime.now();
+
+    super.initState();
   }
 
   @override

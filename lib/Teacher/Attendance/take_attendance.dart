@@ -1,153 +1,299 @@
+import 'package:classroom/Teacher/Attendance/display_attendance_list.dart';
 import 'package:classroom/helper/constant.dart';
+import 'package:classroom/models/attendanceData.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/views/quiz/playquiz.dart';
 import 'package:classroom/widgets/appBar.dart';
+import 'package:classroom/widgets/dialogs.dart';
+import 'package:classroom/widgets/widgets.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Attendance extends StatefulWidget {
-  final TeacherDetails td;
+  TeacherDetails td;
   Attendance(this.td);
   @override
   _AttendanceState createState() => _AttendanceState();
 }
 
 class _AttendanceState extends State<Attendance> {
-  Stream quizStream;
-  DatabaseService databaseService = new DatabaseService();
+  DateTime _currentDate, _previousDay;
+  bool tapped = false;
+  int lengthofDoc;
 
-  Widget quizList() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-      child: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("Branch")
-            .doc(widget.td.branch)
-            .collection(widget.td.sem)
-            .doc(widget.td.div)
-            .collection("Student").orderBy("RollNo").snapshots(),
-        builder: (context, snapshot) {
-          return snapshot.data == null
-              ? Container(
-            child: CircularProgressIndicator(),
-          )
-              : ListView.builder(
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot course = snapshot.data.documents[index];
-                    return StudentTile(
-                        name: course['RollNo'],
+  @override
+  void initState() {
+    // TODO: implement initState
+    _currentDate = DateTime.now();
+    _previousDay = DateTime.now().subtract(Duration(days: 1));
+    super.initState();
+  }
+
+  Widget build(BuildContext context) {
+    String _fd = DateFormat.yMMMd().format(_currentDate);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Attendance"),
+        backgroundColor: Colors.black,
+      ),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        child: Column(
+          children: [
+            ListTile(
+              leading: Icon(Icons.calendar_today),
+              title: Text(_fd),
+              trailing: Icon(Icons.keyboard_arrow_down),
+              onTap: _pickDate,
+            ),
+            Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height *7/10,
+              // height: double.infinity,
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("Branch")
+                    .doc(widget.td.branch)
+                    .collection(widget.td.sem)
+                    .doc(widget.td.div)
+                    .collection("Student").orderBy("RollNo").snapshots(),
+                builder: (context, snapshot) {
+                  return snapshot.data == null
+                      ? Container(
+                    child: CircularProgressIndicator(),
+                  )
+                      : ListView.builder(
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot course = snapshot.data.documents[index];
+                        lengthofDoc = snapshot.data.documents.length;
+                        return StudentTile(
+                            rollno: course['RollNo'],
+                            fname: course["FirstName"],
+                            lname: course["LastName"],
+                            uid: course["UserID"],
+                            date: _fd,
+                          branch: widget.td.branch,
+                          div: widget.td.div,
+                          sem: widget.td.sem,
+                          sub: widget.td.subject,
+                          exacttym: _currentDate.toString(),
                         );
-                  });
+                      });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.done),
+        onPressed: () async{
+          final action = await Dialogs.yesAbortDialog(context, "WARNING", "Do you want to save and proceed further?");
+          if(action == DialogAction.yes){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AttendanceDisplay()));
+          }
+          print("DOne");
+          print(_fd);
+          print(_fd.runtimeType);
+          print(lengthofDoc);
         },
       ),
     );
   }
+  _pickDate() async {
+    DateTime date = await showDatePicker(
+        context: context,
+        initialDate: _currentDate,
+        // initialDate: DateTime(DateTime.now().day - 1),
+        firstDate: DateTime(DateTime.now().year - 50),
+        lastDate: DateTime.now());
 
-  // @override
-  // void initState() {
-  //   databaseService.getQuizData().then((val) {
-  //     setState(() {
-  //       quizStream = val;
-  //     });
-  //   });
-  //   super.initState();
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(context),
-      body: Container(
-          color: kSecondaryColor.withOpacity(0.01), child: quizList()),
-      //floatingActionButton: FloatingActionButton(
-      // backgroundColor: kPrimaryColor,
-      // child: Icon(Icons.add),
-      // onPressed: () {
-      //  Navigator.push(
-      //     context, MaterialPageRoute(builder: (context) => CreateQuiz()));
-      // },
-    );
+    if (date != null) {
+      setState(() {
+        _currentDate = date;
+        print(_currentDate);
+      });
+    }
   }
 }
 
-// class StudentTile extends StatelessWidget {
-//   final String imgURL, title, desc, id;
-//   StudentTile(this.desc, this.imgURL, this.title, this.id);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         Navigator.push(
-//             context, MaterialPageRoute(builder: (context) => PlayQuiz(id)));
-//       },
-//       child: Container(
-//         height: 150,
-//         margin: EdgeInsets.only(bottom: 8),
-//         child: Stack(
-//           children: [
-//             ClipRRect(
-//               borderRadius: BorderRadius.circular(10),
-//               child: Image.network(
-//                 imgURL,
-//                 width: MediaQuery.of(context).size.width - 48,
-//                 fit: BoxFit.cover,
-//               ),
-//             ),
-//             Container(
-//               decoration: BoxDecoration(
-//                 color: Color.fromRGBO(20, 20, 20, 0.5),
-//                 borderRadius: BorderRadius.circular(10),
-//               ),
-//               alignment: Alignment.center,
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   Text(
-//                     title,
-//                     style: TextStyle(
-//                       color: Colors.white,
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                   ),
-//                   SizedBox(
-//                     height: 6,
-//                   ),
-//                   Text(
-//                     desc,
-//                     style: TextStyle(
-//                       color: Colors.white70,
-//                       fontSize: 15,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 
-class StudentTile extends StatelessWidget {
-  final String name;
-  StudentTile({this.name});
+
+class StudentTile extends StatefulWidget {
+  final String fname, rollno,lname, uid, date, sub, branch, div, sem, exacttym;
+  StudentTile({this.fname, this.rollno, this.lname,this.uid, this.date, this.sem,this.branch,this.div,this.sub,this.exacttym});
+
+  @override
+  _StudentTileState createState() => _StudentTileState();
+}
+
+class _StudentTileState extends State<StudentTile> {
+  TeacherDetails td;
+  List<bool> isSelected;
+  bool _attendance = false;
+  String status, checka, delete;
+  DatabaseService databaseService = new DatabaseService();
+
+  uploadAttendanceData() async {
+    Map<String,dynamic> attendaceDetails = {
+      "RollNumber" : widget.rollno,
+      "Data" : widget.date,
+      "Status" : status,
+      "Name" : "${widget.fname} ${widget.lname}",
+      "Time" : widget.exacttym
+    };
+
+    databaseService.addStudentsAttandanceDetailsSubject(
+      branch: widget.branch,
+      semester: widget.sem,
+      div: widget.div,
+      date: widget.date,
+      status: status,
+      studentId: widget.uid,
+      subject: widget.sub,
+      studentData: attendaceDetails,
+    );
+  }
+  deleteAttendanceData() async {
+    databaseService.deleteStudentsAttandanceDetailsSubject(branch: widget.branch,
+      semester: widget.sem,
+      div: widget.div,
+      date: widget.date,
+      status: delete,
+      studentId: widget.uid,
+      subject: widget.sub,
+    );
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    isSelected = [
+      false,
+      false
+    ];
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print(name);
-      },
+    return
+    //   GestureDetector(
+    //   onTap: () {
+    //     print(name);
+    //   },
+    //   child: Container(
+    //     // child: Stack(),
+    //     child: Text(rollno),
+    //   ),
+    // );
+    Padding(
+      padding: const EdgeInsets.all(2.0),
       child: Container(
-        // child: Stack(),
-        child: Text(name),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(
+            colors: _attendance ?[Color.fromRGBO(2, 170, 176, 0.5),Color.fromRGBO(0, 205, 172,0.5)]: [Color.fromRGBO(221, 94, 137, 0.7),Color.fromRGBO(247, 187, 151,0.7)],
+          )
+        ),
+        child: ListTile(
+          leading: CircleAvatar(
+            // backgroundImage: NetworkImage(),
+            backgroundColor:_attendance ? Colors.green : Colors.red.shade400,
+            child: Text(widget.rollno,
+              style: TextStyle(
+                color: _attendance ? Colors.black : Colors.white,
+                fontSize: 18,
+              ),
+
+            ),
+          ),
+          title: Container(
+
+              child: Text("${widget.fname} ${widget.lname}", style: TextStyle(fontSize: 20),)
+          ),
+          subtitle: Text("Roll Number : ${widget.rollno}",style: TextStyle(fontSize: 15),),
+          trailing: ToggleButtons(
+            children: [
+              Text("P",style: _attendance ? TextStyle(fontSize: 15,fontWeight: FontWeight.bold): TextStyle(fontSize: 15),),
+              Text("A",style: _attendance ? TextStyle(fontSize: 15) : TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)
+            ],
+            isSelected: isSelected,
+            color: Colors.white,
+            selectedColor: Colors.black,
+            fillColor: _attendance ? Colors.green : Colors.red.shade400,
+            onPressed: (index){
+              setState(() {
+                for(int i = 0; i<isSelected.length; i++){
+                  if(i == index){
+                    isSelected[i] = true;
+                    if(i == 1){
+                      if(checka == null){
+                        status = "Absent";
+                        checka = status;
+                        _attendance = false;
+                        print(status);
+                        print(widget.date);
+                        print(widget.uid);
+                        print(widget.rollno);
+                        uploadAttendanceData();
+                      } else {
+                        print("*-------State Changed to absent--------*");
+                        status = "Absent";
+                        delete = "Present";
+                        checka = status;
+                        _attendance = false;
+
+                        print(status);
+                        print(widget.sub);
+                        print(widget.date);
+                        print(widget.uid);
+                        print(widget.rollno);
+                        deleteAttendanceData();
+                        uploadAttendanceData();
+                      }
+                    }else {
+                      if(checka == null) {
+                        _attendance = true;
+                        status = "Present";
+                        checka = status;
+                        print("*------------------------*");
+                        print(status);
+                        print(widget.date);
+                        print(widget.uid);
+                        print(widget.rollno);
+                        uploadAttendanceData();
+                        print("***********************************");
+                      } else {
+                        _attendance = true;
+                        status = "Present";
+                        delete =  "Absent";
+                        print("*-------State Changed to present--------*");
+                        print(status);
+                        print(widget.date);
+                        print(widget.uid);
+                        print(widget.rollno);
+                        print("****************");
+                        deleteAttendanceData();
+                        uploadAttendanceData();
+                      }
+                    }
+
+                  }else{
+                    isSelected[i] = false;
+                  }
+                }
+              });
+            },
+          ),
+        ),
       ),
     );
   }
