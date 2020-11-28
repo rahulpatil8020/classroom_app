@@ -16,8 +16,8 @@ class HelperFunction {
   }
 }
 
-const kPrimaryColor = Color(0xffffc61f);
-const kSecondaryColor = Color(0xffb5bfd0);
+const kPrimaryColor = Color(0xff4c4cff);
+const kSecondaryColor = Color(0xff3344ad);
 const kTextColor = Color(0xff50505d);
 const kTextLightColor = Color(0xff6a727d);
 
