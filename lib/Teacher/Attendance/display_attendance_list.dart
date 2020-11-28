@@ -29,17 +29,40 @@ class _AttendanceDisplayState extends State<AttendanceDisplay> {
             .collection(widget.date)
             .doc(widget.sid).snapshots(),
         builder: (context, snapshot){
-          return snapshot.data == null
-              ? Container(
-            child: CircularProgressIndicator(),
-          )
-              : ListView.builder(
-            itemCount: snapshot.data.documents.length,
+          if(!snapshot.hasData) {
+            return Center(
+              child: Container(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          final c = snapshot.data.docs;
+          List <AttendanceModel> dataList = [];
+          for(var tasksData in c) {
+            var taskDetails = tasksData.data();
+            print(taskDetails);
+            dataList.add(
+              AttendanceModel(
+                subject: c["Subject"],
+                status: c["Status"],
+                date: c["Data"],
+                currentDate: c["Time"],
+                name: c["Name"],
+                rollno: c["RollNumber"]
+              ),
+            );
+          }
+
+
+          return ListView.separated(
+            itemCount: dataList.length,
             itemBuilder: (context, index) {
-              DocumentSnapshot course = snapshot.data.documents[index];
-              return ListTile(
-                leading: Text(course["RollNumber"]),
-                title: Text(course["Name"]),
+              return dataList[index];
+            },
+            separatorBuilder: (context, index) {
+              return Divider(
+                height: 1.0,
               );
             },
           );
@@ -54,5 +77,49 @@ class _AttendanceDisplayState extends State<AttendanceDisplay> {
       content: Text(message),
     );
     showDialog(context: context, builder: (_) => alertDialog);
+  }
+}
+
+
+
+class AttendanceModel extends StatefulWidget {
+  String name, rollno, date;
+  Timestamp currentDate;
+  String status, subject;
+
+  AttendanceModel({
+    this.name,
+    this.rollno,
+    this.date,
+    this.currentDate,
+    this.status,
+    this.subject});
+  @override
+  _AttendanceModelState createState() => _AttendanceModelState();
+}
+
+class _AttendanceModelState extends State<AttendanceModel> {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12)
+      ),
+
+      child: ListTile(
+        title: Text(widget.name),
+        leading: CircleAvatar(
+          // backgroundImage: NetworkImage(),
+          backgroundColor: widget.status == "Absent"  ? Colors.green : Colors.red.shade400,
+          child: Text(widget.rollno,
+            style: TextStyle(
+              color: widget.status == "Absent" ? Colors.black : Colors.white,
+              fontSize: 18,
+            ),
+          ),
+        ),
+        subtitle: Text(widget.date),
+      ),
+    );
   }
 }
