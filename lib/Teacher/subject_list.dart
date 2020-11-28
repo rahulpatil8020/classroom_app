@@ -40,11 +40,11 @@ class _SubjectListState extends State<SubjectList> {
                     widget.td.div = course["Division"];
                     widget.td.subject = course["Subject"];
                     widget.td.sem = course["Semester"];
-                    widget.td.uid = course.id;
                     print(widget.td.subject);
                     print(widget.td.branch);
                     print(widget.td.sem);
                     print(widget.td.div);
+                    print(widget.td.uid);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

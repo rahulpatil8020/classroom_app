@@ -324,6 +324,30 @@ class DatabaseService {
     });
   }
 
+  Future<void> showStudentsAttandanceDetailsSubject({
+    @required String branch,
+    @required String semester,
+    @required String div,
+    @required String teacherId,
+    @required String studentId,
+    @required String date,
+    @required String subject,
+    @required Map studentData}) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semester)
+        .doc(div)
+        .collection("Teacher")
+        .doc(teacherId)
+        .collection("Attendance").doc(subject)
+        .collection(date)
+        .doc(studentId)
+        .set(studentData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
 
   // Future<void> addStudentsAttandanceDetails({
   //   @required String branch,

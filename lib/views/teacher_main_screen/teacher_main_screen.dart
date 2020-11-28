@@ -39,6 +39,7 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
           widget.td.mname = snapshot.data["middle_name"];
           widget.td.password = snapshot.data["password"];
           widget.td.email = snapshot.data["Email"];
+          widget.td.uid = snapshot.data["UID"];
           // widget.td.pickeddate = snapshot.data["DOB"];
           return SingleChildScrollView(
             child: Column(
@@ -88,6 +89,7 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
           print(widget.td.email);
           print(widget.td.lname);
           print(widget.td.mname);
+          print(widget.td.uid);
         },
       ),
       // homeScreenBox(context, "Create Assignment", CreateAssignments())
