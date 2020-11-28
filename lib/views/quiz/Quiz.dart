@@ -91,7 +91,10 @@ class QuizTile extends StatelessWidget {
             ),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(20, 20, 20, 0.5),
+                gradient: LinearGradient(
+                    colors: [kSecondaryColor, kPrimaryColor],
+                    begin: Alignment.centerRight,
+                    end: Alignment.centerLeft),
                 borderRadius: BorderRadius.circular(10),
               ),
               alignment: Alignment.center,
