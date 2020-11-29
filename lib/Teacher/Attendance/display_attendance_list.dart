@@ -66,10 +66,10 @@ class _AttendanceDisplayState extends State<AttendanceDisplay> {
                           time: course["Time"],
                           uid: course["UID"],
                         ),
-
                       ],
                     );
-                  } else return null;
+                  }
+                else return null;
                   //   Container(
                   //   child: Center(
                   //     child: Text("Everyone is present"),
