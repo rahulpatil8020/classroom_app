@@ -276,6 +276,30 @@ class DatabaseService {
     });
   }
 
+  Future<void> updateStudentsAttandanceDetailsSubjectStudents({
+    @required String branch,
+    @required String semester,
+    @required String div,
+    @required String studentId,
+    @required String date,
+    @required String subject,
+    @required String status,
+    @required Map studentData}) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semester)
+        .doc(div)
+        .collection("Student")
+        .doc(studentId)
+        .collection(subject).doc("Attendance")
+        .collection(status)
+        .doc(date)
+        .update(studentData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
 
 
   Future<void> deleteStudentsAttandanceDetailsSubject({
@@ -294,7 +318,7 @@ class DatabaseService {
         .doc(div)
         .collection("Student")
         .doc(studentId)
-        .collection("Attendance").doc(subject)
+        .collection(subject).doc("Attendance")
         .collection(status)
         .doc(date)
         .delete()
@@ -323,6 +347,7 @@ class DatabaseService {
       print(e.toString());
     });
   }
+
 
   Future<void> showStudentsAttandanceDetailsSubject({
     @required String branch,
