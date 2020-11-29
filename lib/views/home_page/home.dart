@@ -17,9 +17,22 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: Column(
         children: [
-          homeScreenBox(context, "Quiz", Quiz(), size.width, 200, 35),
-          homeScreenBox(context, "Assignments", Assignments(widget.email),
-              size.width, 200, 35)
+          homeScreenBox(
+            context,
+            "Quiz",
+            Quiz(),
+            size.width,
+            200,
+            35,
+          ),
+          homeScreenBox(
+            context,
+            "Assignments",
+            Assignments(widget.email),
+            size.width,
+            200,
+            35,
+          )
         ],
       ),
     );
