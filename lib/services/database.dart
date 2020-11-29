@@ -329,7 +329,7 @@ class DatabaseService {
     @required String semester,
     @required String div,
     @required String teacherId,
-    @required String studentId,
+    @required String rollno,
     @required String date,
     @required String subject,
     @required Map studentData}) async {
@@ -342,8 +342,33 @@ class DatabaseService {
         .doc(teacherId)
         .collection("Attendance").doc(subject)
         .collection(date)
-        .doc(studentId)
+        .doc(rollno)
         .set(studentData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> updateStudentsAttandanceDetailsSubject({
+    @required String branch,
+    @required String semester,
+    @required String div,
+    @required String teacherId,
+    @required String rollno,
+    @required String date,
+    @required String subject,
+    @required Map studentData}) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semester)
+        .doc(div)
+        .collection("Teacher")
+        .doc(teacherId)
+        .collection("Attendance").doc(subject)
+        .collection(date)
+        .doc(rollno)
+        .update(studentData)
         .catchError((e) {
       print(e.toString());
     });

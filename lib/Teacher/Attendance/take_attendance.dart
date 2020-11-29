@@ -73,11 +73,11 @@ class _AttendanceState extends State<Attendance> {
                           child: CircularProgressIndicator(),
                         )
                       : ListView.builder(
-                          itemCount: snapshot.data.documents.length,
+                          itemCount: snapshot.data.docs.length,
                           itemBuilder: (context, index) {
                             DocumentSnapshot course =
-                                snapshot.data.documents[index];
-                            lengthofDoc = snapshot.data.documents.length;
+                                snapshot.data.docs[index];
+                            lengthofDoc = snapshot.data.docs.length;
                             uid = course["UserID"];
                             return StudentTile(
                               rollno: course['RollNo'],
@@ -110,11 +110,12 @@ class _AttendanceState extends State<Attendance> {
               sendData = true;
             });
             // widget.ic.isCompleted = true;
-            Navigator.pushReplacement(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        AttendanceDisplay(widget.td, _fd, uid)));
+                        // AttendanceDisplay(widget.td)));
+            AttendanceDisplay(widget.td, _fd, uid)));
             print("Data sent succesfully");
           }
           print("DOne");
@@ -181,7 +182,7 @@ class _StudentTileState extends State<StudentTile> {
   String status, checka, delete;
   DatabaseService databaseService = new DatabaseService();
 
-  uploadAttendanceData() async {
+  uploadAttendanceData(String rollno) async {
     Map<String, dynamic> attendaceDetails = {
       "RollNumber": widget.rollno,
       "Data": widget.date,
@@ -189,6 +190,7 @@ class _StudentTileState extends State<StudentTile> {
       "Name": "${widget.fname} ${widget.lname}",
       "Time": widget.exacttym,
       "Subject": widget.sub,
+      "UID": widget.uid,
     };
 
     databaseService.addStudentsAttandanceDetailsSubject(
@@ -208,7 +210,7 @@ class _StudentTileState extends State<StudentTile> {
       semester: widget.sem,
       div: widget.div,
       teacherId: widget.tid,
-      studentId: widget.uid,
+      rollno: rollno,
       date: widget.date,
       studentData: attendaceDetails,
       subject: widget.sub,
@@ -319,7 +321,7 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        uploadAttendanceData();
+                        uploadAttendanceData(widget.rollno);
                       } else {
                         print("*-------State Changed to absent--------*");
                         status = "Absent";
@@ -332,7 +334,7 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        uploadAttendanceData();
+                        uploadAttendanceData(widget.rollno);
                         deleteAttendanceData();
                       }
                     } else {
@@ -345,7 +347,7 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        uploadAttendanceData();
+                        uploadAttendanceData(widget.rollno);
                         print("***********************************");
                       } else {
                         _attendance = true;
@@ -357,7 +359,7 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.uid);
                         print(widget.rollno);
                         print("****************");
-                        uploadAttendanceData();
+                        uploadAttendanceData(widget.rollno);
                         deleteAttendanceData();
                       }
                     }
