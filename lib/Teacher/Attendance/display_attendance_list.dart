@@ -33,49 +33,60 @@ class _AttendanceDisplayState extends State<AttendanceDisplay> {
       body: StreamBuilder(
         stream: users.snapshots(),
         builder: (context, snapshot) {
-          return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) {
-                DocumentSnapshot course = snapshot.data.docs[index];
-                if(!snapshot.hasData){
-                  return Center(
-                    child: Column(
-                      children: [
-                        CircularProgressIndicator(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("LOADING....."),
-                        ),
-                      ],
-                    ),
-                  );
-                } else
-                  if(course["Status"] == "Absent") {
-                      return Column(
-                      children: [
-                        StudentsDisplayAttandanceChanges(
-                          rollno: course['RollNumber'],
-                          name: course["Name"],
-                          date: course["Data"],
-                          status: course["Status"],
-                          branch: widget.td.branch,
-                          div: widget.td.div,
-                          sem: widget.td.sem,
-                          subject: course["Subject"],
-                          tid: widget.td.uid,
-                          time: course["Time"],
-                          uid: course["UID"],
-                        ),
-                      ],
-                    );
-                  }
-                else return null;
-                  //   Container(
-                  //   child: Center(
-                  //     child: Text("Everyone is present"),
-                  //   ),
-                  // );
-              },
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 7 / 10,
+                  child: ListView.builder(
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot course = snapshot.data.docs[index];
+                        if(!snapshot.hasData){
+                          return Center(
+                            child: Column(
+                              children: [
+                                CircularProgressIndicator(),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("LOADING....."),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else
+                          if(course["Status"] == "Absent") {
+                              return StudentsDisplayAttandanceChanges(
+                                rollno: course['RollNumber'],
+                                name: course["Name"],
+                                date: course["Data"],
+                                status: course["Status"],
+                                branch: widget.td.branch,
+                                div: widget.td.div,
+                                sem: widget.td.sem,
+                                subject: course["Subject"],
+                                tid: widget.td.uid,
+                                time: course["Time"],
+                                uid: course["UID"],
+                              );
+                          }
+                        else return null;
+                          //   Container(
+                          //   child: Center(
+                          //     child: Text("Everyone is present"),
+                          //   ),
+                          // );
+                      },
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),
