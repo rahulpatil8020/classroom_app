@@ -15,8 +15,8 @@ import 'package:intl/intl.dart';
 
 class Attendance extends StatefulWidget {
   TeacherDetails td;
-  IsCompleted ic;
-  Attendance(this.td, this.ic);
+  DateTime time;
+  Attendance(this.td, [this.time]);
   @override
   _AttendanceState createState() => _AttendanceState();
 }
@@ -46,58 +46,46 @@ class _AttendanceState extends State<Attendance> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child: Column(
-          children: [
-            ListTile(
-              leading: Icon(Icons.calendar_today),
-              title: Text(_fd),
-              trailing: Icon(Icons.keyboard_arrow_down),
-              onTap: _pickDate,
-            ),
-            Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 7 / 10,
-              // height: double.infinity,
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("Branch")
-                    .doc(widget.td.branch)
-                    .collection(widget.td.sem)
-                    .doc(widget.td.div)
-                    .collection("Student")
-                    .orderBy("RollNo")
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  return snapshot.data == null
-                      ? Container(
-                          child: CircularProgressIndicator(),
-                        )
-                      : ListView.builder(
-                          itemCount: snapshot.data.docs.length,
-                          itemBuilder: (context, index) {
-                            DocumentSnapshot course =
-                                snapshot.data.docs[index];
-                            lengthofDoc = snapshot.data.docs.length;
-                            uid = course["UserID"];
-                            return StudentTile(
-                              rollno: course['RollNo'],
-                              fname: course["FirstName"],
-                              lname: course["LastName"],
-                              uid: course["UserID"],
-                              date: _fd,
-                              datasend: sendData,
-                              branch: widget.td.branch,
-                              div: widget.td.div,
-                              sem: widget.td.sem,
-                              sub: widget.td.subject,
-                              exacttym: _currentDate.toString(),
-                              tid: widget.td.uid,
-                            );
-                          });
-                },
-              ),
-            ),
-          ],
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection("Branch")
+              .doc(widget.td.branch)
+              .collection(widget.td.sem)
+              .doc(widget.td.div)
+              .collection("Student")
+              .orderBy("RollNo")
+              .snapshots(),
+          builder: (context, snapshot) {
+            return snapshot.data == null
+                ? Container(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot course =
+                          snapshot.data.docs[index];
+                      lengthofDoc = snapshot.data.docs.length;
+                      uid = course["UserID"];
+                      return Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: StudentTile(
+                          rollno: course['RollNo'],
+                          fname: course["FirstName"],
+                          lname: course["LastName"],
+                          uid: course["UserID"],
+                          date: _fd,
+                          datasend: sendData,
+                          branch: widget.td.branch,
+                          div: widget.td.div,
+                          sem: widget.td.sem,
+                          sub: widget.td.subject,
+                          exacttym: _currentDate.toString(),
+                          tid: widget.td.uid,
+                        ),
+                      );
+                    });
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(

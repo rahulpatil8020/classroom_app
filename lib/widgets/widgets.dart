@@ -1,5 +1,6 @@
 import 'package:classroom/Teacher/Attendance/dashboard_attendance.dart';
 import 'package:classroom/helper/constant.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget blueButton(BuildContext context, String label) {
@@ -129,10 +130,11 @@ Widget inputTextStylingForm(
 
 
 
-Widget customContainerDashboard(){
+Widget takeAttendanceContainerDashboard(BuildContext context){
   return Container(
-    height: 25,
-    width: 25,
+    // height: 20,
+    width: double.infinity,
+    alignment: Alignment.center,
     decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -144,6 +146,42 @@ Widget customContainerDashboard(){
             Color(0xff4e4376)
           ],
         )
+    ),
+    child: Text("Take Attendance",
+      style: TextStyle(
+          fontSize: 28,
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+      ),
+    ),
+
+  );
+}
+
+
+Widget showAttendanceContainerDashboard(BuildContext context){
+  return Container(
+    // height: 20,
+    width: double.infinity,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            // Color.fromRGBO(69, 104, 220, 1),
+            // Color.fromRGBO(176, 106, 179, 1),
+            Color(0xffff512f),
+            Color(0xffdd2476)
+          ],
+        )
+    ),
+    child: Text("Show Attendance",
+      style: TextStyle(
+          fontSize: 28,
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+      ),
     ),
 
   );
