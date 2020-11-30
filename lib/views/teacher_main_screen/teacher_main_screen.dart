@@ -1,5 +1,6 @@
 import 'package:classroom/TEST/create_teacher_info.dart';
 import 'package:classroom/TEST/display_subject_test.dart';
+import 'package:classroom/Teacher/Attendance/dashboard_attendance.dart';
 import 'package:classroom/Teacher/Attendance/take_attendance.dart';
 import 'package:classroom/Teacher/subject_list.dart';
 import 'package:classroom/models/statechecker.dart';
@@ -63,7 +64,8 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
                         context,
                         "Attendence",
                         SubjectList(
-                            widget.td, "Attendance", Attendance(widget.td,widget.ic), widget.ic),
+                            widget.td, "Attendance", DashboardAttendance(td: widget.td), widget.ic),
+                        // Attendance(widget.td,widget.ic)
                         150,
                         150,
                         25)

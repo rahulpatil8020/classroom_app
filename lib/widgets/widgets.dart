@@ -1,3 +1,4 @@
+import 'package:classroom/Teacher/Attendance/dashboard_attendance.dart';
 import 'package:classroom/helper/constant.dart';
 import 'package:flutter/material.dart';
 
@@ -122,5 +123,72 @@ Widget inputTextStylingForm(
         return val;
       },
     ),
+  );
+}
+
+
+
+
+Widget customContainerDashboard(){
+  return Container(
+    height: 25,
+    width: 25,
+    decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            // Color.fromRGBO(69, 104, 220, 1),
+            // Color.fromRGBO(176, 106, 179, 1),
+            Color(0xff2b5876),
+            Color(0xff4e4376)
+          ],
+        )
+    ),
+
+  );
+}
+
+
+
+Widget getCustomAppbarLG(BuildContext context){
+  return PreferredSize(
+      child: Container(
+        alignment: Alignment.bottomCenter,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              // Color.fromRGBO(69, 104, 220, 1),
+              // Color.fromRGBO(176, 106, 179, 1),
+              Color(0xffc33764),
+              Color(0xff1d2671)
+            ],
+          )
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(11.5),
+              child: Text("Attendance Dashboard",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),),
+            ),
+          ],
+        ),
+      ),
+      preferredSize: Size.fromHeight(55)
   );
 }
