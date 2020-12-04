@@ -7,19 +7,6 @@ AppBar appBar(BuildContext context) {
   return AppBar(
     elevation: 0,
     backgroundColor: kSecondaryColor.withOpacity(0.01),
-    // title: RichText(
-    //     text: TextSpan(
-    //         style: Theme.of(context)
-    //             .textTheme
-    //             .headline6
-    //             .copyWith(fontWeight: FontWeight.w900),
-    //         children: [
-    //       TextSpan(
-    //         text: "School",
-    //         style: TextStyle(color: kSecondaryColor),
-    //       ),
-    //       TextSpan(text: "Pool", style: TextStyle(color: kPrimaryColor))
-    //     ])),
     actions: <Widget>[
       IconButton(
           icon: Icon(Icons.exit_to_app, color: kSecondaryColor),

@@ -35,6 +35,9 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
             .doc(widget.td.email)
             .snapshots(),
         builder: (context, snapshot) {
+          if(snapshot.data == null){
+            return CircularProgressIndicator();
+          } else {
           widget.td.fname = snapshot.data["first_name"];
           widget.td.lname = snapshot.data["last_name"];
           widget.td.mname = snapshot.data["middle_name"];
@@ -42,47 +45,85 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
           widget.td.email = snapshot.data["Email"];
           widget.td.uid = snapshot.data["UID"];
           // widget.td.pickeddate = snapshot.data["DOB"];
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    homeScreenBox(
-                        context, "Create Quiz", CreateQuiz(), 150, 150, 25),
-                    homeScreenBox(context, "Post Assignment",
-                        CreateAssignments(), 150, 150, 25)
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    homeScreenBox(
-                        context, "Notice", CreateNotification(), 150, 150, 25),
-                    homeScreenBox(
-                        context,
-                        "Attendence",
-                        SubjectList(
-                            widget.td, "Attendance", DashboardAttendance(td: widget.td), widget.ic),
-                        // Attendance(widget.td,widget.ic)
-                        150,
-                        150,
-                        25)
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    homeScreenBox(context, "Test",
-                        TestTeacherDetails(widget.td), 150, 150, 25),
-                    homeScreenBox(context, "Display Teacher Subject List",
-                        DisplaySubjectList(widget.td), 150, 150, 25)
-                  ],
-                ),
-              ],
-            ),
-          );
+
+            return Container(
+              color: Colors.black,
+              child: GridView.count(
+                crossAxisCount: 2,
+                // mainAxisSpacing: 5,
+                // crossAxisSpacing: 5,
+
+                children: [
+                  displayListTeachers(
+                      context,"Create Quiz",
+                      [Color(0xffFF61D2),
+                        Color(0xffFE9090),],
+                    Colors.black
+                  ),
+
+                  displayListTeachers(
+                      context,"Post Assignment",
+                      [Color(0xffFF512F),
+                        Color(0xffDD2476),],
+                      Colors.white
+                  ),
+
+                  displayListTeachers(
+                      context,"Attendance",
+                      [Color(0xffaa076b ),
+                        Color(0xff61045f),],
+                      Colors.white
+                  ),
+
+                  displayListTeachers(
+                      context,"Notice",
+                      [Color(0xff4568dc),
+                        Color(0xffb06ab3),],
+                      Colors.black
+                  ),
+
+
+                  displayListTeachers(
+                      context,"Study Material",
+                      [Color(0xff185a9d),
+                        Color(0xff43cea2),],
+                      Colors.black
+                  ),
+
+                  displayListTeachers(
+                      context,"Subject List",
+                      [Color(0xff7b4397),
+                        Color(0xffdc2430),],
+                      Colors.white,
+                  ),
+
+                  homeScreenBox(
+                      context, "Create Quiz", CreateQuiz(), 150, 150, 25),
+                  homeScreenBox(context, "Post Assignment",
+                      CreateAssignments(), 150, 150, 25),
+                  homeScreenBox(
+                      context, "Notice", CreateNotification(), 150, 150,
+                      25),
+                  homeScreenBox(
+                      context,
+                      "Attendence",
+                      SubjectList(
+                          widget.td, "Attendance",
+                          DashboardAttendance(td: widget.td), widget.ic),
+                      // Attendance(widget.td,widget.ic)
+                      150,
+                      150,
+                      25),
+                  homeScreenBox(context, "Test",
+                      TestTeacherDetails(widget.td), 150, 150, 25),
+                  homeScreenBox(context, "Display Teacher Subject List",
+                      DisplaySubjectList(widget.td), 150, 150, 25),
+
+
+                ],
+              ),
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
