@@ -54,70 +54,106 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
                 // crossAxisSpacing: 5,
 
                 children: [
-                  displayListTeachers(
-                      context,"Create Quiz",
-                      [Color(0xffFF61D2),
-                        Color(0xffFE9090),],
-                    Colors.black
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => CreateQuiz()));
+                    },
+                    child: displayListTeachers(
+                        context,"Create Quiz",
+                        [Color(0xffFF61D2),
+                          Color(0xffFE9090),],
+                      Colors.black
+                    ),
                   ),
 
-                  displayListTeachers(
+          GestureDetector(
+          onTap: (){
+          Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateAssignments()));
+          },
+          child: displayListTeachers(
                       context,"Post Assignment",
                       [Color(0xffFF512F),
                         Color(0xffDD2476),],
                       Colors.white
                   ),
+          ),
 
-                  displayListTeachers(
+          GestureDetector(
+          onTap: (){
+          Navigator.push(
+          context, MaterialPageRoute(builder: (context) => SubjectList(
+              widget.td, "Attendance",
+              DashboardAttendance(td: widget.td), widget.ic),));
+          },
+          child: displayListTeachers(
                       context,"Attendance",
                       [Color(0xffaa076b ),
                         Color(0xff61045f),],
                       Colors.white
                   ),
+          ),
 
-                  displayListTeachers(
+          GestureDetector(
+          onTap: (){
+          Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateNotification()));
+          },
+          child: displayListTeachers(
                       context,"Notice",
                       [Color(0xff4568dc),
                         Color(0xffb06ab3),],
                       Colors.black
                   ),
+          ),
 
 
-                  displayListTeachers(
+          GestureDetector(
+          onTap: (){
+          Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateQuiz()));
+          },
+          child: displayListTeachers(
                       context,"Study Material",
                       [Color(0xff185a9d),
                         Color(0xff43cea2),],
                       Colors.black
-                  ),
+                  ),),
 
-                  displayListTeachers(
+          GestureDetector(
+          onTap: (){
+          Navigator.push(
+          context, MaterialPageRoute(builder: (context) => DisplaySubjectList(widget.td)));
+          },
+          child: displayListTeachers(
                       context,"Subject List",
                       [Color(0xff7b4397),
                         Color(0xffdc2430),],
                       Colors.white,
-                  ),
+                  ),),
 
-                  homeScreenBox(
-                      context, "Create Quiz", CreateQuiz(), 150, 150, 25),
-                  homeScreenBox(context, "Post Assignment",
-                      CreateAssignments(), 150, 150, 25),
-                  homeScreenBox(
-                      context, "Notice", CreateNotification(), 150, 150,
-                      25),
-                  homeScreenBox(
-                      context,
-                      "Attendence",
-                      SubjectList(
-                          widget.td, "Attendance",
-                          DashboardAttendance(td: widget.td), widget.ic),
-                      // Attendance(widget.td,widget.ic)
-                      150,
-                      150,
-                      25),
-                  homeScreenBox(context, "Test",
-                      TestTeacherDetails(widget.td), 150, 150, 25),
-                  homeScreenBox(context, "Display Teacher Subject List",
-                      DisplaySubjectList(widget.td), 150, 150, 25),
+                  // homeScreenBox(
+                  //     context, "Create Quiz", CreateQuiz(), 150, 150, 25),
+                  // homeScreenBox(context, "Post Assignment",
+                  //     CreateAssignments(), 150, 150, 25),
+                  // homeScreenBox(
+                  //     context, "Notice", CreateNotification(), 150, 150,
+                  //     25),
+                  // homeScreenBox(
+                  //     context,
+                  //     "Attendence",
+                  //     SubjectList(
+                  //         widget.td, "Attendance",
+                  //         DashboardAttendance(td: widget.td), widget.ic),
+                  //     // Attendance(widget.td,widget.ic)
+                  //     150,
+                  //     150,
+                  //     25),
+                  // homeScreenBox(context, "Test",
+                  //     TestTeacherDetails(widget.td), 150, 150, 25),
+                  // homeScreenBox(context, "Display Teacher Subject List",
+                  //     DisplaySubjectList(widget.td), 150, 150, 25),
 
 
                 ],
@@ -126,15 +162,15 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print(widget.td.fname);
-          print(widget.td.email);
-          print(widget.td.lname);
-          print(widget.td.mname);
-          print(widget.td.uid);
-        },
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     print(widget.td.fname);
+      //     print(widget.td.email);
+      //     print(widget.td.lname);
+      //     print(widget.td.mname);
+      //     print(widget.td.uid);
+      //   },
+      // ),
       // homeScreenBox(context, "Create Assignment", CreateAssignments())
     );
   }
