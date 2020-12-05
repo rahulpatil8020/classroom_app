@@ -1,11 +1,7 @@
 import 'package:classroom/Teacher/Attendance/display_attendance_list.dart';
 import 'package:classroom/helper/constant.dart';
 import 'package:classroom/models/attendanceData.dart';
-
 import 'package:classroom/models/statechecker.dart';
-
-import 'package:classroom/models/student_info.dart';
-
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/views/quiz/playquiz.dart';
@@ -18,14 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class Attendance extends StatefulWidget {
-
   TeacherDetails td;
-  IsCompleted ic;
-  Attendance(this.td, this.ic);
-
-  final TeacherDetails td;
-  Attendance(this.td);
-
+  DateTime time;
+  Attendance(this.td, [this.time]);
   @override
   _AttendanceState createState() => _AttendanceState();
 }
@@ -55,65 +46,46 @@ class _AttendanceState extends State<Attendance> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child: Column(
-          children: [
-            ListTile(
-              leading: Icon(Icons.calendar_today),
-              title: Text(_fd),
-              trailing: Icon(Icons.keyboard_arrow_down),
-              onTap: _pickDate,
-            ),
-            Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 7 / 10,
-              // height: double.infinity,
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("Branch")
-                    .doc(widget.td.branch)
-                    .collection(widget.td.sem)
-                    .doc(widget.td.div)
-                    .collection("Student")
-                    .orderBy("RollNo")
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  return snapshot.data == null
-                      ? Container(
-                          child: CircularProgressIndicator(),
-                        )
-                      : ListView.builder(
-                          itemCount: snapshot.data.documents.length,
-                          itemBuilder: (context, index) {
-                            DocumentSnapshot course =
-                                snapshot.data.documents[index];
-                            lengthofDoc = snapshot.data.documents.length;
-
-                            uid = course["UserID"];
-
-
-                            return StudentTile(
-                              rollno: course['RollNo'],
-                              fname: course["FirstName"],
-                              lname: course["LastName"],
-                              uid: course["UserID"],
-                              date: _fd,
-
-                              datasend: sendData,
-
-                              branch: widget.td.branch,
-                              div: widget.td.div,
-                              sem: widget.td.sem,
-                              sub: widget.td.subject,
-                              exacttym: _currentDate.toString(),
-
-                              tid: widget.td.uid,
-
-                            );
-                          });
-                },
-              ),
-            ),
-          ],
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection("Branch")
+              .doc(widget.td.branch)
+              .collection(widget.td.sem)
+              .doc(widget.td.div)
+              .collection("Student")
+              .orderBy("RollNo")
+              .snapshots(),
+          builder: (context, snapshot) {
+            return snapshot.data == null
+                ? Container(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot course =
+                          snapshot.data.docs[index];
+                      lengthofDoc = snapshot.data.docs.length;
+                      uid = course["UserID"];
+                      return Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: StudentTile(
+                          rollno: course['RollNo'],
+                          fname: course["FirstName"],
+                          lname: course["LastName"],
+                          uid: course["UserID"],
+                          date: _fd,
+                          datasend: sendData,
+                          branch: widget.td.branch,
+                          div: widget.td.div,
+                          sem: widget.td.sem,
+                          sub: widget.td.subject,
+                          exacttym: _currentDate.toString(),
+                          tid: widget.td.uid,
+                        ),
+                      );
+                    });
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -122,21 +94,17 @@ class _AttendanceState extends State<Attendance> {
           final action = await Dialogs.yesAbortDialog(
               context, "WARNING", "Do you want to save and proceed further?");
           if (action == DialogAction.yes) {
-
             setState(() {
               sendData = true;
             });
             // widget.ic.isCompleted = true;
-            Navigator.pushReplacement(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        AttendanceDisplay(widget.td, _fd, uid)));
+                        // AttendanceDisplay(widget.td)));
+            AttendanceDisplay(widget.td, _fd, uid)));
             print("Data sent succesfully");
-
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => AttendanceDisplay()));
-
           }
           print("DOne");
           print(_fd);
@@ -165,7 +133,6 @@ class _AttendanceState extends State<Attendance> {
 }
 
 class StudentTile extends StatefulWidget {
-
   final String fname,
       rollno,
       lname,
@@ -178,9 +145,6 @@ class StudentTile extends StatefulWidget {
       exacttym,
       tid;
   bool datasend;
-
-  final String fname, rollno, lname, uid, date, sub, branch, div, sem, exacttym;
-
   StudentTile(
       {this.fname,
       this.rollno,
@@ -191,13 +155,9 @@ class StudentTile extends StatefulWidget {
       this.branch,
       this.div,
       this.sub,
-
       this.exacttym,
       this.datasend,
       this.tid});
-
-      this.exacttym});
-
 
   @override
   _StudentTileState createState() => _StudentTileState();
@@ -210,18 +170,15 @@ class _StudentTileState extends State<StudentTile> {
   String status, checka, delete;
   DatabaseService databaseService = new DatabaseService();
 
-  uploadAttendanceData() async {
+  uploadAttendanceData(String rollno) async {
     Map<String, dynamic> attendaceDetails = {
       "RollNumber": widget.rollno,
       "Data": widget.date,
       "Status": status,
       "Name": "${widget.fname} ${widget.lname}",
-
       "Time": widget.exacttym,
       "Subject": widget.sub,
-
-      "Time": widget.exacttym
-
+      "UID": widget.uid
     };
 
     databaseService.addStudentsAttandanceDetailsSubject(
@@ -241,7 +198,7 @@ class _StudentTileState extends State<StudentTile> {
       semester: widget.sem,
       div: widget.div,
       teacherId: widget.tid,
-      studentId: widget.uid,
+      rollno: rollno,
       date: widget.date,
       studentData: attendaceDetails,
       subject: widget.sub,
@@ -352,7 +309,7 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        uploadAttendanceData();
+                        uploadAttendanceData(widget.rollno);
                       } else {
                         print("*-------State Changed to absent--------*");
                         status = "Absent";
@@ -365,7 +322,7 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        uploadAttendanceData();
+                        uploadAttendanceData(widget.rollno);
                         deleteAttendanceData();
                       }
                     } else {
@@ -378,7 +335,7 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.date);
                         print(widget.uid);
                         print(widget.rollno);
-                        uploadAttendanceData();
+                        uploadAttendanceData(widget.rollno);
                         print("***********************************");
                       } else {
                         _attendance = true;
@@ -390,7 +347,7 @@ class _StudentTileState extends State<StudentTile> {
                         print(widget.uid);
                         print(widget.rollno);
                         print("****************");
-                        uploadAttendanceData();
+                        uploadAttendanceData(widget.rollno);
                         deleteAttendanceData();
                       }
                     }

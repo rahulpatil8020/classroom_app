@@ -73,12 +73,6 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: appBar(context),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        brightness: Brightness.light,
-      ),
       body: _isLoading
           ? Container(
               child: Center(
@@ -259,33 +253,49 @@ class _SignInState extends State<SignIn> {
 
 
 
-class RouteDecide extends StatelessWidget {
+class RouteDecide extends StatefulWidget {
   final TeacherDetails td;
   final StudentInfo si;
   final String email,id;
   final String password;
-  String role;
+
   RouteDecide({this.td,this.si,this.password,this.email, this.id});
+
+  @override
+  _RouteDecideState createState() => _RouteDecideState();
+}
+
+class _RouteDecideState extends State<RouteDecide> {
+  String role;
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("User")
-          .doc(email)
+          .doc(widget.email)
           .snapshots(),
       builder: (context,snapshot){
-        role = snapshot.data["role"];
+        if(!snapshot.hasData){
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else{
+          role = snapshot.data["role"];
         if(role == "Student"){
-          si.uid = id;
-          si.email = email;
-          si.password = password;
-          return  MainScreen(si);
+          widget.si.uid = widget.id;
+          widget.si.email = widget.email;
+          widget.si.password = widget.password;
+          return MainScreen(widget.si);
         }
         else{
-          td.uid = id;
-          td.email = email;
-          td.password = password;
-          return TeacherMainScreen(td);
+          widget.td.uid = widget.id;
+          widget.td.email = widget.email;
+          widget.td.password = widget.password;
+          return TeacherMainScreen(widget.td);
+
+        }
         }
 
         // } else return Center(

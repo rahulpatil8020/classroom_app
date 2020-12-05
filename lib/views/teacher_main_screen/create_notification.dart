@@ -44,7 +44,7 @@ class _CreateNotificationState extends State<CreateNotification> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: appBar(context),
+        appBar: appBar(context, "Notice"),
         body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Padding(

@@ -95,7 +95,7 @@ class _SignUpState extends State<SignUp> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: appBar(context),
+        title: appBar(context, "SignUp"),
         backgroundColor: Colors.white,
         elevation: 0.0,
         brightness: Brightness.light,

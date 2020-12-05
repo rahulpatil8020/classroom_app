@@ -1,4 +1,6 @@
+import 'package:classroom/Teacher/Attendance/dashboard_attendance.dart';
 import 'package:classroom/helper/constant.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Widget blueButton(BuildContext context, String label) {
@@ -122,5 +124,109 @@ Widget inputTextStylingForm(
         return val;
       },
     ),
+  );
+}
+
+
+
+
+Widget takeAttendanceContainerDashboard(BuildContext context){
+  return Container(
+    // height: 20,
+    width: double.infinity,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            // Color.fromRGBO(69, 104, 220, 1),
+            // Color.fromRGBO(176, 106, 179, 1),
+            Color(0xff2b5876),
+            Color(0xff4e4376)
+          ],
+        )
+    ),
+    child: Text("Take Attendance",
+      style: TextStyle(
+          fontSize: 28,
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+      ),
+    ),
+
+  );
+}
+
+
+Widget showAttendanceContainerDashboard(BuildContext context){
+  return Container(
+    // height: 20,
+    width: double.infinity,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            // Color.fromRGBO(69, 104, 220, 1),
+            // Color.fromRGBO(176, 106, 179, 1),
+            Color(0xffff512f),
+            Color(0xffdd2476)
+          ],
+        )
+    ),
+    child: Text("Show Attendance",
+      style: TextStyle(
+          fontSize: 28,
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+      ),
+    ),
+
+  );
+}
+
+
+
+Widget getCustomAppbarLG(BuildContext context){
+  return PreferredSize(
+      child: Container(
+        alignment: Alignment.bottomCenter,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              // Color.fromRGBO(69, 104, 220, 1),
+              // Color.fromRGBO(176, 106, 179, 1),
+              Color(0xffc33764),
+              Color(0xff1d2671)
+            ],
+          )
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(11.5),
+              child: Text("Attendance Dashboard",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),),
+            ),
+          ],
+        ),
+      ),
+      preferredSize: Size.fromHeight(55)
   );
 }

@@ -44,7 +44,7 @@ class _CreateAssignmentQuestionsState extends State<CreateAssignmentQuestions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: appBar(context),
+        appBar: appBar(context, "Questions"),
         body: _isLoading
             ? Container(
                 child: Center(child: CircularProgressIndicator()),

@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context),
+      appBar: appBar(context, "Welcome!"),
 
       body: StreamBuilder(
         stream: FirebaseFirestore.instance

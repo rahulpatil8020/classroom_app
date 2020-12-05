@@ -41,7 +41,7 @@ class _AssignmentQuestionsState extends State<AssignmentQuestions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context),
+      appBar: appBar(context, "Assignment"),
       body: queList(widget.assignId),
     );
   }
