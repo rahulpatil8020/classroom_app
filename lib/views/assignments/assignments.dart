@@ -79,7 +79,7 @@ class _AssignmentsState extends State<Assignments> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context),
+      appBar: appBar(context, "Assignment"),
       body: Container(
           color: kSecondaryColor.withOpacity(0.01),
           child: studentDetails(widget.email)),

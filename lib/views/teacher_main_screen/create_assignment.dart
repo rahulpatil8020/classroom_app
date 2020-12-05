@@ -45,7 +45,7 @@ class _CreateAssignmentsState extends State<CreateAssignments> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: appBar(context),
+        appBar: appBar(context, "Assignment"),
         body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Padding(

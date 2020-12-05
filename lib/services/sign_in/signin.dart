@@ -73,12 +73,6 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: appBar(context),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        brightness: Brightness.light,
-      ),
       body: _isLoading
           ? Container(
               child: Center(

@@ -28,7 +28,7 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context),
+      appBar: appBar(context, "Home"),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("User")

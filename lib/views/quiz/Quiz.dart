@@ -51,7 +51,7 @@ class _QuizState extends State<Quiz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(context),
+      appBar: appBar(context, "Add Quiz"),
       body: Container(
           color: kSecondaryColor.withOpacity(0.01), child: quizList()),
       //floatingActionButton: FloatingActionButton(
