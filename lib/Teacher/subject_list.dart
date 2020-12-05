@@ -17,6 +17,7 @@ class SubjectList extends StatefulWidget {
 }
 
 class _SubjectListState extends State<SubjectList> {
+  // var;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
