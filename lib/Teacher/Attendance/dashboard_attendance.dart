@@ -1,4 +1,5 @@
 import 'package:classroom/Teacher/Attendance/display_attendance_list.dart';
+import 'package:classroom/Teacher/Attendance/show_attendance.dart';
 import 'package:classroom/Teacher/Attendance/take_attendance.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/widgets/widgets.dart';
@@ -63,13 +64,14 @@ class _DashboardAttendanceState extends State<DashboardAttendance> {
               ),
               GestureDetector(
                 onTap: (){
-          _pickDate();
+          _pickDatee();
           // Navigator.push(
           //     context,
           //     MaterialPageRoute(
           //         builder: (context) =>
           //         // AttendanceDisplay(widget.td)));
           //         AttendanceDisplay(widget.td, _fd, uid)));
+          //
           },
                   child: showAttendanceContainerDashboard(context)
               ),
@@ -95,6 +97,23 @@ class _DashboardAttendanceState extends State<DashboardAttendance> {
         _currentDate = date;
         print(_currentDate);
         Navigator.push(context, MaterialPageRoute(builder: (context) => Attendance(widget.td, _currentDate)));
+      });
+    }
+  }
+
+  _pickDatee() async {
+    DateTime date = await showDatePicker(
+        context: context,
+        initialDate: _currentDate,
+        // initialDate: DateTime(DateTime.now().day - 1),
+        firstDate: DateTime(DateTime.now().year - 50),
+        lastDate: DateTime.now());
+
+    if (date != null) {
+      setState(() {
+        _currentDate = date;
+        print(_currentDate);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ShowAttendanceDetails(widget.td, DateFormat.yMMMd().format(_currentDate))));
       });
     }
   }

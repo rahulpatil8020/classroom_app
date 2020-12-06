@@ -1,4 +1,3 @@
-class CustomUserId {
- final String uid;
-  CustomUserId({this.uid});
+String customUserId(String uid) {
+ return uid;
 }
