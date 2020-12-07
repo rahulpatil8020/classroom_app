@@ -458,6 +458,27 @@ class DatabaseService {
     });
   }
 
+  Future<void> updateQuizQuestionDetails(
+      Map questionData,
+      String quizId,
+      String branch,
+      String semister,
+      String division,
+      String docId) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semister)
+        .doc(division)
+        .collection("Quiz")
+        .doc(quizId)
+        .collection("QuestionsData").doc(docId)
+        .update(questionData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
 
 
 

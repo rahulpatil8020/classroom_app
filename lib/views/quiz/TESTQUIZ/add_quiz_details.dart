@@ -57,7 +57,7 @@ class _CreateQuizTESTState extends State<CreateQuizTEST> {
       databaseService.addQuizDetails(quizMap, quizId,widget.td.branch,widget.td.sem,widget.td.div).then((value) {
         setState(() {
           _isLoading = false;
-          Navigator.pushReplacement(context,
+          Navigator.pop(context,
               MaterialPageRoute(builder: (context) => AddQuestion(quizId, widget.td)));
         });
       });
