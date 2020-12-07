@@ -130,7 +130,7 @@ Widget inputTextStylingForm(
 
 
 
-Widget takeAttendanceContainerDashboard(BuildContext context){
+Widget takeAttendanceContainerDashboard(BuildContext context, String name){
   return Container(
     // height: 20,
     width: double.infinity,
@@ -147,7 +147,7 @@ Widget takeAttendanceContainerDashboard(BuildContext context){
           ],
         )
     ),
-    child: Text("Take Attendance",
+    child: Text(name,
       style: TextStyle(
           fontSize: 28,
           color: Colors.white,
@@ -159,7 +159,7 @@ Widget takeAttendanceContainerDashboard(BuildContext context){
 }
 
 
-Widget showAttendanceContainerDashboard(BuildContext context){
+Widget showAttendanceContainerDashboard(BuildContext context, String name){
   return Container(
     // height: 20,
     width: double.infinity,
@@ -176,7 +176,95 @@ Widget showAttendanceContainerDashboard(BuildContext context){
           ],
         )
     ),
-    child: Text("Show Attendance",
+    child: Text(name,
+      style: TextStyle(
+          fontSize: 28,
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+      ),
+    ),
+
+  );
+}
+
+
+Widget takeQuizContainerDashboard(BuildContext context, String name){
+  return Container(
+    height: 150,
+    width: double.infinity,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            // Color.fromRGBO(69, 104, 220, 1),
+            // Color.fromRGBO(176, 106, 179, 1),
+            Color(0xff2b5876),
+            Color(0xff4e4376)
+          ],
+        )
+    ),
+    child: Text(name,
+      style: TextStyle(
+          fontSize: 28,
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+      ),
+    ),
+
+  );
+}
+
+
+Widget showQuizContainerDashboard(BuildContext context, String name){
+  return Container(
+    height: 150,
+    width: double.infinity,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            // Color.fromRGBO(69, 104, 220, 1),
+            // Color.fromRGBO(176, 106, 179, 1),
+            Color(0xffff512f),
+            Color(0xffdd2476)
+          ],
+        )
+    ),
+    child: Text(name,
+      style: TextStyle(
+          fontSize: 28,
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+      ),
+    ),
+
+  );
+}
+
+Widget showQuizResultContainerDashboard(BuildContext context, String name){
+  return Container(
+    height: 150,
+    width: double.infinity,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            // Color.fromRGBO(69, 104, 220, 1),
+            // Color.fromRGBO(176, 106, 179, 1),
+            Color(0xff4568dc),Color(0xffb06ab3)
+          ],
+        )
+    ),
+    child: Text(name,
       style: TextStyle(
           fontSize: 28,
           color: Colors.white,

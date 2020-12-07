@@ -327,6 +327,7 @@ class DatabaseService {
     });
   }
 
+
   Future<void> addStudentsAttandanceDetailsSubjectTotal({
     @required String branch,
     @required String semester,
@@ -422,6 +423,53 @@ class DatabaseService {
   //     print(e.toString());
   //   });
   // }
+
+
+
+
+  Future<void> addQuizDetails(Map noticeData, String quizId,
+      String branch, String semister, String division) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semister)
+        .doc(division)
+        .collection("Quiz")
+        .doc(quizId)
+        .set(noticeData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  Future<void> addQuizQuestionDetails(Map questionData, String quizId,
+      String branch, String semister, String division) async {
+    await FirebaseFirestore.instance
+        .collection("Branch")
+        .doc(branch)
+        .collection(semister)
+        .doc(division)
+        .collection("Quiz")
+        .doc(quizId)
+        .collection("QuestionsData")
+        .add(questionData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 

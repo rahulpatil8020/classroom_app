@@ -60,7 +60,7 @@ class _DashboardAttendanceState extends State<DashboardAttendance> {
                   _pickDate();
                   print(users.get().toString());
                 },
-                  child: takeAttendanceContainerDashboard(context)
+                  child: takeAttendanceContainerDashboard(context, "Take Attendance")
               ),
               GestureDetector(
                 onTap: (){
@@ -73,7 +73,7 @@ class _DashboardAttendanceState extends State<DashboardAttendance> {
           //         AttendanceDisplay(widget.td, _fd, uid)));
           //
           },
-                  child: showAttendanceContainerDashboard(context)
+                  child: showAttendanceContainerDashboard(context , "Show Attendance")
               ),
 
             ],

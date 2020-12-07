@@ -1,10 +1,12 @@
+import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class AddQuestion extends StatefulWidget {
+  TeacherDetails td;
   final String quizId;
-  AddQuestion(this.quizId);
+  AddQuestion(this.quizId, [this.td]);
   @override
   _AddQuestionState createState() => _AddQuestionState();
 }
@@ -29,7 +31,7 @@ class _AddQuestionState extends State<AddQuestion> {
         "option4": option4,
       };
 
-      databaseService.addQuestionData(quizMap, widget.quizId).then((value) {
+      databaseService.addQuizQuestionDetails(quizMap, widget.quizId,widget.td.branch,widget.td.sem,widget.td.div).then((value) {
         setState(() {
           _isLoading = false;
           // Navigator.pushReplacement(
@@ -37,6 +39,29 @@ class _AddQuestionState extends State<AddQuestion> {
         });
       });
     }
+  }
+
+  hostQuiz() async {
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      Map<String, String> quizMap = {
+        "Question": question,
+        "option1": option1,
+        "option2": option2,
+        "option3": option3,
+        "option4": option4,
+      };
+
+      databaseService.addQuizQuestionDetails(quizMap, widget.quizId,widget.td.branch,widget.td.sem,widget.td.div).then((value) {
+        setState(() {
+          _isLoading = false;
+          Navigator.pop(context);
+        });
+      });
+    } else Navigator.pop(context);
   }
 
   @override
@@ -223,7 +248,8 @@ class _AddQuestionState extends State<AddQuestion> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // hostQuiz();
+                            hostQuiz();
+
                             Navigator.pop(context);
                           },
                           child: customButton(context, "Submit",

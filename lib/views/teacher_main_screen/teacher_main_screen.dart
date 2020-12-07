@@ -5,6 +5,8 @@ import 'package:classroom/Teacher/Attendance/take_attendance.dart';
 import 'package:classroom/Teacher/subject_list.dart';
 import 'package:classroom/models/statechecker.dart';
 import 'package:classroom/models/teachersignupdetails.dart';
+import 'package:classroom/views/quiz/TESTQUIZ/add_quiz_details.dart';
+import 'package:classroom/views/quiz/TESTQUIZ/quiz_dashboard.dart';
 import 'package:classroom/views/teacher_main_screen/create_assignment.dart';
 import 'package:classroom/views/teacher_main_screen/create_notification.dart';
 import 'package:classroom/views/teacher_main_screen/create_quiz.dart';
@@ -112,10 +114,12 @@ class _TeacherMainScreenState extends State<TeacherMainScreen> {
           GestureDetector(
           onTap: (){
           Navigator.push(
-          context, MaterialPageRoute(builder: (context) => CreateQuiz()));
+          context, MaterialPageRoute(builder: (context) => SubjectList(
+              widget.td, "Quiz",
+              DashboardQuiz(td: widget.td,), widget.ic),));
           },
           child: displayListTeachers(
-                      context,"Study Material",
+                      context,"Quiz TEST",
                       [Color(0xff185a9d),
                         Color(0xff43cea2),],
                       Colors.black
