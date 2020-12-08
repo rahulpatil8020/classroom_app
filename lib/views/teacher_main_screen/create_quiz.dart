@@ -1,3 +1,4 @@
+import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
 import 'package:classroom/views/quiz/questionadd.dart';
 import 'package:classroom/widgets/widgets.dart';

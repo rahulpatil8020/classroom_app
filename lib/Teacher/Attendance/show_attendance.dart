@@ -1,106 +1,105 @@
 import 'package:classroom/models/teachersignupdetails.dart';
 import 'package:classroom/services/database.dart';
-import 'package:classroom/views/teacher_main_screen/teacher_main_screen.dart';
 import 'package:classroom/widgets/dialogs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class AttendanceDisplay extends StatefulWidget {
+class ShowAttendanceDetails extends StatefulWidget {
   TeacherDetails td;
-  String date,sid;
-  AttendanceDisplay(this.td, this.date,[this.sid]);
+  String date;
+  ShowAttendanceDetails(this.td, this.date);
   @override
-  _AttendanceDisplayState createState() => _AttendanceDisplayState();
+  _ShowAttendanceDetailsState createState() => _ShowAttendanceDetailsState();
 }
 
-class _AttendanceDisplayState extends State<AttendanceDisplay> {
+class _ShowAttendanceDetailsState extends State<ShowAttendanceDetails> {
   DatabaseService databaseService = DatabaseService();
   QuerySnapshot querySnapshot;
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance
-        .collection("Branch")
-        .doc(widget.td.branch)
-        .collection(widget.td.sem)
-        .doc(widget.td.div)
-        .collection("Teacher")
-        .doc(widget.td.uid)
-        .collection("Attendance").doc(widget.td.subject)
-        .collection(widget.date);
+    // CollectionReference users = FirebaseFirestore.instance
+    //     .collection("Branch")
+    //     .doc(widget.td.branch)
+    //     .collection(widget.td.sem)
+    //     .doc(widget.td.div)
+    //     .collection("Teacher")
+    //     .doc(widget.td.uid)
+    //     .collection("Attendance").doc(widget.td.subject)
+    //     .collection(widget.date);
     return Scaffold(
       appBar: AppBar(
         title: Text("Attendance of ${widget.date}"),
       ),
       body: StreamBuilder(
-        stream: users.snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("Branch")
+            .doc(widget.td.branch)
+            .collection(widget.td.sem)
+            .doc(widget.td.div)
+            .collection("Teacher")
+            .doc(widget.td.uid)
+            .collection("Attendance").doc(widget.td.subject)
+            .collection(widget.date).snapshots(),
         builder: (context, snapshot) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 7 / 10,
-                  child: ListView.builder(
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot course = snapshot.data.docs[index];
-                        if(!snapshot.hasData){
-                          return Center(
-                            child: Column(
-                              children: [
-                                CircularProgressIndicator(),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("LOADING....."),
-                                ),
-                              ],
-                            ),
-                          );
-                        } else
-                          {
-                              return StudentsDisplayAttandanceChanges(
-                                rollno: course['RollNumber'],
-                                name: course["Name"],
-                                date: course["Data"],
-                                status: course["Status"],
-                                branch: widget.td.branch,
-                                div: widget.td.div,
-                                sem: widget.td.sem,
-                                subject: course["Subject"],
-                                tid: widget.td.uid,
-                                time: course["Time"],
-                                uid: course["UID"],
-                              );
-                          }
-                        // else return null;
-                          //   Container(
-                          //   child: Center(
-                          //     child: Text("Everyone is present"),
-                          //   ),
-                          // );
-                      },
+          if(!snapshot.hasData){
+           return Center(
+              child: Text("------------------------No Data Found----------------------------")
+            );
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-              ],
-            ),
-          );
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 7 / 10,
+                    child: ListView.builder(
+                        itemCount: snapshot.data.docs.length,
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot course = snapshot.data.docs[index];
+                          print(
+                              "-------------------------------------------------");
+                          print(!snapshot.hasData);
+                          return StudentsDisplayAttandanceChanges(
+                            rollno: course['RollNumber'],
+                            name: course["Name"],
+                            date: course["Data"],
+                            status: course["Status"],
+                            branch: widget.td.branch,
+                            div: widget.td.div,
+                            sem: widget.td.sem,
+                            subject: course["Subject"],
+                            tid: widget.td.uid,
+                            time: course["Time"],
+                            uid: course["UID"],
+                          );
+                        }
+                      // else return null;
+                      //   Container(
+                      //   child: Center(
+                      //     child: Text("Everyone is present"),
+                      //   ),
+                      // );
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.done_all_outlined),
         onPressed: (){
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                  // AttendanceDisplay(widget.td)));
-                  TeacherMainScreen(widget.td)));
+          Navigator.pop(context);
         },
       ),
     );
@@ -140,132 +139,78 @@ class _StudentsDisplayAttandanceChangesState extends State<StudentsDisplayAttand
     return Padding(
         padding: const EdgeInsets.all(5.0),
         child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              gradient: LinearGradient(
-                colors: attendance
-                    ? [
-                  Color.fromRGBO(2, 170, 176, 0.5),
-                  Color.fromRGBO(0, 205, 172, 0.5)
-                ]
-                    : [
-                  Color.fromRGBO(221, 94, 137, 0.7),
-                  Color.fromRGBO(247, 187, 151, 0.7)
-                ],
-              )),
-          child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: attendance ? Colors.green : Colors.red.shade400,
-            child: Text(widget.rollno),
-          ),
-          title: Text(widget.name),
-          subtitle: Text(widget.status),
-            onTap: () async {
-              final action = await Dialogs.yesAbortDialog(
-                  context, "WARNING", "Do you want to change attendance Status?");
-              if (action == DialogAction.yes) {
-                setState(() {
-                  // sendData = true;
-                  if(widget.status == "Absent"){
-                    updatedattendance = "Absent";
-                    Map <String, dynamic> update = {
-                      "Status" : "Present",
-                    };
-                    Map<String, dynamic> attendaceDetails = {
-                      "RollNumber": widget.rollno,
-                      "Data": widget.date,
-                      "Status": "Present",
-                      "Name": widget.name,
-                      "Time": widget.time,
-                      "Subject": widget.subject,
-                      "UID": widget.uid,
-                    };
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  colors: attendance
+                      ? [
+                    Color.fromRGBO(2, 170, 176, 0.5),
+                    Color.fromRGBO(0, 205, 172, 0.5)
+                  ]
+                      : [
+                    Color.fromRGBO(221, 94, 137, 0.7),
+                    Color.fromRGBO(247, 187, 151, 0.7)
+                  ],
+                )),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: attendance ? Colors.green : Colors.red.shade400,
+                child: Text(widget.rollno),
+              ),
+              title: Text(widget.name),
+              subtitle: Text(widget.status),
+              onTap: () async {
+                final action = await Dialogs.yesAbortDialog(
+                    context, "WARNING", "Do you want to change attendance Status?");
+                if (action == DialogAction.yes) {
+                  setState(() {
+                    // sendData = true;
+                    if(widget.status == "Absent"){
+                      updatedattendance = "Absent";
+                      Map <String, dynamic> update = {
+                        "Status" : "Present",
+                      };
+                      Map<String, dynamic> attendaceDetails = {
+                        "RollNumber": widget.rollno,
+                        "Data": widget.date,
+                        "Status": "Present",
+                        "Name": widget.name,
+                        "Time": widget.time,
+                        "Subject": widget.subject,
+                        "UID": widget.uid,
+                      };
 
-                    databaseService.addStudentsAttandanceDetailsSubject(
-                      branch: widget.branch,
-                      semester: widget.sem,
-                      div: widget.div,
-                      date: widget.date,
-                      status: "Present",
-                      studentId: widget.uid,
-                      subject: widget.subject,
-                      studentData: attendaceDetails,
-                    );
-                    databaseService.updateStudentsAttandanceDetailsSubject(
+                      databaseService.addStudentsAttandanceDetailsSubject(
                         branch: widget.branch,
                         semester: widget.sem,
                         div: widget.div,
-                        teacherId: widget.tid,
-                        rollno: widget.rollno,
                         date: widget.date,
-                        subject: widget.subject,
-                        studentData: update
-                    );
-                    databaseService.updateStudentsAttandanceDetailsSubjectStudents(
-                        branch: widget.branch,
-                        semester: widget.sem,
-                        div: widget.div,
+                        status: "Present",
                         studentId: widget.uid,
-                        date: widget.date,
                         subject: widget.subject,
-                        status: widget.status,
-                        studentData: update
-                    );
-                    databaseService.deleteStudentsAttandanceDetailsSubject(
-                      branch: widget.branch,
-                      semester: widget.sem,
-                      div: widget.div,
-                      studentId: widget.uid,
-                      date: widget.date,
-                      subject: widget.subject,
-                      status: updatedattendance,
-                    );
-
-                  } else {
-                    updatedattendance = "Present";
-                    Map <String, dynamic> update = {
-                      "Status" : "Absent",
-                    };
-                    Map<String, dynamic> attendaceDetails = {
-                      "RollNumber": widget.rollno,
-                      "Data": widget.date,
-                      "Status": "Absent",
-                      "Name": widget.name,
-                      "Time": widget.time,
-                      "Subject": widget.subject,
-                      "UID": widget.uid,
-                    };
-
-                    databaseService.addStudentsAttandanceDetailsSubject(
-                      branch: widget.branch,
-                      semester: widget.sem,
-                      div: widget.div,
-                      date: widget.date,
-                      status: "Absent",
-                      studentId: widget.uid,
-                      subject: widget.subject,
-                      studentData: attendaceDetails,
-                    );
-                    databaseService.updateStudentsAttandanceDetailsSubject(
-                        branch: widget.branch,
-                        semester: widget.sem,
-                        div: widget.div,
-                        teacherId: widget.tid,
-                        rollno: widget.rollno,
-                        date: widget.date,
-                        subject: widget.subject,
-                        studentData: update);
-                    databaseService.updateStudentsAttandanceDetailsSubjectStudents(
-                        branch: widget.branch,
-                        semester: widget.sem,
-                        div: widget.div,
-                        studentId: widget.uid,
-                        date: widget.date,
-                        subject: widget.subject,
-                        status: widget.status,
-                        studentData: update
-                    );
-                    databaseService.deleteStudentsAttandanceDetailsSubject(
+                        studentData: attendaceDetails,
+                      );
+                      databaseService.updateStudentsAttandanceDetailsSubject(
+                          branch: widget.branch,
+                          semester: widget.sem,
+                          div: widget.div,
+                          teacherId: widget.tid,
+                          rollno: widget.rollno,
+                          date: widget.date,
+                          subject: widget.subject,
+                          studentData: update
+                      );
+                      databaseService.updateStudentsAttandanceDetailsSubjectStudents(
+                          branch: widget.branch,
+                          semester: widget.sem,
+                          div: widget.div,
+                          studentId: widget.uid,
+                          date: widget.date,
+                          subject: widget.subject,
+                          status: widget.status,
+                          studentData: update
+                      );
+                      databaseService.deleteStudentsAttandanceDetailsSubject(
                         branch: widget.branch,
                         semester: widget.sem,
                         div: widget.div,
@@ -273,19 +218,73 @@ class _StudentsDisplayAttandanceChangesState extends State<StudentsDisplayAttand
                         date: widget.date,
                         subject: widget.subject,
                         status: updatedattendance,
-                        studentData: update
-                    );
-                  }
-                });
-                // widget.ic.isCompleted = true;
+                      );
 
-                print("Data sent succesfully");
-              }
-              print("DOne");
-              print(widget.name);
-            },
-        )
-    ));
+                    } else {
+                      updatedattendance = "Present";
+                      Map <String, dynamic> update = {
+                        "Status" : "Absent",
+                      };
+                      Map<String, dynamic> attendaceDetails = {
+                        "RollNumber": widget.rollno,
+                        "Data": widget.date,
+                        "Status": "Absent",
+                        "Name": widget.name,
+                        "Time": widget.time,
+                        "Subject": widget.subject,
+                        "UID": widget.uid,
+                      };
+
+                      databaseService.addStudentsAttandanceDetailsSubject(
+                        branch: widget.branch,
+                        semester: widget.sem,
+                        div: widget.div,
+                        date: widget.date,
+                        status: "Absent",
+                        studentId: widget.uid,
+                        subject: widget.subject,
+                        studentData: attendaceDetails,
+                      );
+                      databaseService.updateStudentsAttandanceDetailsSubject(
+                          branch: widget.branch,
+                          semester: widget.sem,
+                          div: widget.div,
+                          teacherId: widget.tid,
+                          rollno: widget.rollno,
+                          date: widget.date,
+                          subject: widget.subject,
+                          studentData: update);
+                      databaseService.updateStudentsAttandanceDetailsSubjectStudents(
+                          branch: widget.branch,
+                          semester: widget.sem,
+                          div: widget.div,
+                          studentId: widget.uid,
+                          date: widget.date,
+                          subject: widget.subject,
+                          status: widget.status,
+                          studentData: update
+                      );
+                      databaseService.deleteStudentsAttandanceDetailsSubject(
+                          branch: widget.branch,
+                          semester: widget.sem,
+                          div: widget.div,
+                          studentId: widget.uid,
+                          date: widget.date,
+                          subject: widget.subject,
+                          status: updatedattendance,
+                          studentData: update
+                      );
+                    }
+                  });
+                  // widget.ic.isCompleted = true;
+
+                  print("Data sent succesfully");
+                }
+                print("DOne");
+                print(widget.name);
+              },
+            )
+        ));
   }
 }
 

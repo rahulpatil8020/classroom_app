@@ -28,12 +28,7 @@ class _TestTeacherDetailsState extends State<TestTeacherDetails> {
   }
 
   signup() async {
-    await authService.signUpWithEmailAndPassword(
-        widget.td.email, widget.td.password).then((value) {
-          widget.td.uid = value.uid;
-          print(widget.td.uid);
-    }
-     );
+
   }
 
   @override
@@ -185,32 +180,44 @@ class _TestTeacherDetailsState extends State<TestTeacherDetails> {
                     print(widget.td.pickeddate);
                     print(widget.td.email);
                     print(widget.td.password);
-                    signup();
+                    print(widget.td.uid);
 
-                    Map<String, dynamic> teacherInfo = {
-                      "first_name": widget.td.fname,
-                      "last_name": widget.td.lname,
-                      "middle_name": widget.td.mname,
-                      "Registration ID": widget.td.registrationId,
-                      "DOB": widget.td.pickeddate,
-                      "Email": widget.td.email,
-                      "password": widget.td.password,
-                      "role": "Teacher",
-                      "UID" : widget.td.uid,
-                    };
-
-
-                    databaseService
-                        .addUserData(teacherInfo, widget.td.email)
+                    authService.signUpWithEmailAndPassword(
+                        widget.td.email, widget.td.password)
                         .then((value) {
-                      databaseService.addTeacherDataMain(teacherInfo,widget.td.email,widget.td.branch,widget.td.sem,widget.td.div,widget.td.uid);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AddSubjectTest(td: widget.td)));
-                    });
+                      // customUserId();
+                      widget.td.uid = value.uid;
+                      print(widget.td.uid);
+                      print("-------------------------------- ${value.uid}---------------------------------");
+
+                      Map<String, dynamic> teacherInfo = {
+                        "first_name": widget.td.fname,
+                        "last_name": widget.td.lname,
+                        "middle_name": widget.td.mname,
+                        "Registration ID": widget.td.registrationId,
+                        "DOB": widget.td.pickeddate,
+                        "Email": widget.td.email,
+                        "password": widget.td.password,
+                        "role": "Teacher",
+                        "UID": widget.td.uid,
+                      };
+
+
+                      databaseService
+                          .addUserData(teacherInfo, widget.td.email)
+                          .then((value) {
+                        databaseService.addTeacherDataMain(
+                            teacherInfo, widget.td.email, widget.td.branch,
+                            widget.td.sem, widget.td.div, widget.td.uid);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AddSubjectTest(td: widget.td)));
+                      });
+                    }
+                    );
                   }
-                  // signUp();
                 },
                 child: blueButton(context, "Add Subjects"),
               ),

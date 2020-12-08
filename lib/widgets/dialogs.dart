@@ -24,6 +24,7 @@ class Dialogs{
                 }, 
                 child: Text("Cancel")),
             RaisedButton(
+              color: Colors.blue,
                 onPressed: (){
                   Navigator.of(context).pop(DialogAction.yes);
                 },

@@ -11,11 +11,5 @@ AppBar appBar(BuildContext context, String name) {
       ),)),
     backgroundColor: Colors.black,
     centerTitle: true,
-    actions: [
-      IconButton(icon: Icon(Icons.logout),
-          onPressed: (){
-              print("Logout");
-          })
-    ],
   );
 }

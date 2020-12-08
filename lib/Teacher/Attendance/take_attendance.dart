@@ -29,7 +29,7 @@ class _AttendanceState extends State<Attendance> {
   @override
   void initState() {
     // TODO: implement initState
-    _currentDate = DateTime.now();
+    _currentDate = widget.time;
     _previousDay = DateTime.now().subtract(Duration(days: 1));
 
     super.initState();
